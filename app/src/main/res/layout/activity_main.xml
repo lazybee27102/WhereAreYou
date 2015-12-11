@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="study.project.whereareyou.MainActivity"
+    xmlns:fab="http://schemas.android.com/apk/res-auto">
+
+
+
+
+    <LinearLayout
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <include layout="@layout/toolbar"
+                android:id="@+id/toolbar"
+            ></include>
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/recycleview_chatgroup_list"></android.support.v7.widget.RecyclerView>
+
+            <com.melnykov.fab.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="16dp"
+
+                fab:fab_type="normal"
+                fab:fab_colorNormal="#FF4081"
+                fab:fab_colorPressed="@color/colorPrimary_pink"
+                fab:fab_colorRipple="#FF4081"
+                android:src="@mipmap/ic_create_white_24dp" />
+        </FrameLayout>
+
+
+
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/navigation_drawer_fragment"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:name="study.project.whereareyou.NavigationDrawer.NavigationDrawerFragment"
+        tools:layout="@layout/fragment_navigation_drawer"
+        android:layout_gravity = "start"></fragment>
+
+
+</android.support.v4.widget.DrawerLayout>
