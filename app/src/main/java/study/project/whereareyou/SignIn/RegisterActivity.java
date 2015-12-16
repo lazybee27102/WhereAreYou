@@ -1,4 +1,4 @@
-package study.project.whereareyou;
+package study.project.whereareyou.SignIn;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -20,8 +20,11 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import study.project.whereareyou.OOP.User;
 import study.project.whereareyou.OtherUsefullClass.Message;
 import study.project.whereareyou.OtherUsefullClass.MyEncoder;
+import study.project.whereareyou.R;
+import study.project.whereareyou.SqlHelper.MySqlOpenHelper;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText editText_userName,editText_email,editText_password,editText_retypePassword;
@@ -31,7 +34,6 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
         registerWidget();
         setEvent();
 
@@ -112,6 +114,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private class RegisterAsyncTask extends AsyncTask<String, Boolean, String> {
+        MySqlOpenHelper helper;
         ProgressDialog progressDialog;
         boolean isOK;
 
@@ -124,6 +127,7 @@ public class RegisterActivity extends AppCompatActivity {
         final String SOAP_ACTION_ADDUSER = NAMESPACE+METHOD_ADDUSER;
 
         public RegisterAsyncTask(Context context) {
+            helper = new MySqlOpenHelper(context);
             progressDialog = new ProgressDialog(context);
             progressDialog.setMessage("Registering...");
             progressDialog.show();
@@ -224,6 +228,7 @@ public class RegisterActivity extends AppCompatActivity {
             if(isOK)
             {
                 Message.printMessage(context,"Register Sucessfully");
+
                 finish();
             }
             else

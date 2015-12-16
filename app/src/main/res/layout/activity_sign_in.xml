@@ -86,22 +86,6 @@
             android:paddingBottom="25dp">
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
-
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="LOGIN"
-                    android:id="@+id/button_SignIn"
-                    android:background="#00897b"
-                    android:textColor="#ffffff"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -118,6 +102,24 @@
                     android:textColor="#ffffff"
                     android:textSize="20sp" />
             </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="5dp">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="SIGN IN"
+                    android:id="@+id/button_SignIn"
+                    android:background="#00897b"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+
 
 
             <LinearLayout
@@ -128,28 +130,14 @@
                 android:weightSum="2">
 
                 <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="LOGIN WITH FACEBOOK"
-                    android:id="@+id/button2"
-                    android:textColor="#ffffff"
-                    android:textSize="11sp"
-                    android:background="#146aae"
-                    android:layout_weight="1"
-                    android:layout_marginRight="16dp" />
-
-                <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="LOGIN WITH GOOGLE PLUS"
-                    android:id="@+id/button3"
-                    android:textColor="#ffffff"
-                    android:textSize="11sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="SIGN OUT"
+                    android:id="@+id/button_SignOut"
                     android:background="#b71c1c"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="10dp" />
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:layout_marginTop="5dp" />
 
             </LinearLayout>
 

@@ -3,7 +3,6 @@ package study.project.whereareyou.NavigationDrawer;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -14,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,25 +21,20 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
 
+import study.project.whereareyou.MainActivity;
 import study.project.whereareyou.NavigationDrawerItemActivity.FriendsActivity;
 import study.project.whereareyou.NavigationDrawerItemActivity.LoadProfileImageRounded;
 import study.project.whereareyou.NavigationDrawerItemActivity.ProfileActivity;
 import study.project.whereareyou.NavigationDrawerItemActivity.SettingActivity;
 import study.project.whereareyou.OOP.User;
-import study.project.whereareyou.OtherUsefullClass.ClickListener;
 import study.project.whereareyou.OtherUsefullClass.RecyclerViewTouchListener;
 import study.project.whereareyou.OtherUsefullClass.SharedPreference;
 import study.project.whereareyou.R;
-import study.project.whereareyou.SignInActivity;
 import study.project.whereareyou.SqlHelper.MySqlOpenHelper;
-
-import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,9 +45,8 @@ public class NavigationDrawerFragment extends android.support.v4.app.Fragment {
     ImageView imageView_userIcon;
     TextView textView_navigationdrawer_name;
     TextView getTextView_navigationdrawer_email;
-
     MySqlOpenHelper helper;
-
+    User user;
 
 
     private RecyclerView recyclerView_navi;
@@ -82,22 +76,14 @@ public class NavigationDrawerFragment extends android.support.v4.app.Fragment {
         textView_navigationdrawer_name = (TextView) view.findViewById(R.id.textView_navigationdrawer_name);
         getTextView_navigationdrawer_email = (TextView) view.findViewById(R.id.textView_navigationdrawer_gmail);
 
-        String userName = SharedPreference.ReadFromSharedPreference(getContext(), "USER", null);
-        if(userName!=null && userName.toString().length()!=0)
-        {
-            User user = helper.getUserByName(userName);
-            String personPhotoUrl = user.getPhotoUrl();
-            if(user!=null)
-            {
-                if(personPhotoUrl.trim().length()!=0)
-                {
-                    new LoadProfileImageRounded(imageView_userIcon).execute(personPhotoUrl);
-                }
 
-                textView_navigationdrawer_name.setText(user.getName());
-                getTextView_navigationdrawer_email.setText(user.getEmail());
-            }
-        }
+        //Set top of navigation drawew
+//        Log.d("USERRRRRRRRRRRRRRR", name);
+
+        //textView_navigationdrawer_name.setText(currentUser.getName());
+        //getTextView_navigationdrawer_email.setText(currentUser.getEmail());
+
+
 
 
 
@@ -139,11 +125,7 @@ public class NavigationDrawerFragment extends android.support.v4.app.Fragment {
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-
-                                        SharedPreference.WritetoSharePreference(getActivity(),"LOGIN","false");
                                         getActivity().finish();
-
-
                                     }
                                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     @Override
@@ -169,14 +151,19 @@ public class NavigationDrawerFragment extends android.support.v4.app.Fragment {
             NavigationDrawerItem friend = new NavigationDrawerItem("Friends",R.mipmap.ic_group_black_48dp);
             NavigationDrawerItem signout = new NavigationDrawerItem("Sign Out",R.mipmap.ic_reply_black_48dp);
 
-        arrayList_items.add(profile);
+            arrayList_items.add(profile);
             arrayList_items.add(setting);
             arrayList_items.add(friend);
             arrayList_items.add(signout);
         return arrayList_items;
     }
 
-    public void setUp(DrawerLayout drawerLayout, Toolbar toolbar) {
+    public void setUp(DrawerLayout drawerLayout, Toolbar toolbar,User user) {
+        this.user= user;
+
+        textView_navigationdrawer_name.setText(user.getName());
+        getTextView_navigationdrawer_email.setText(user.getEmail());
+
         mDrawerLayout = drawerLayout;
         mActionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(),mDrawerLayout,toolbar,R.string.drawer_open,R.string.drawer_close){
             @Override

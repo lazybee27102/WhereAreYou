@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 
@@ -22,10 +23,13 @@ import study.project.whereareyou.Conversation.ConversationInfo;
 import study.project.whereareyou.Conversation.ConversationMain;
 import study.project.whereareyou.Conversation.CreateConversationActivity;
 import study.project.whereareyou.Conversation.RecycleView_Conversation_Adapter;
+import study.project.whereareyou.NavigationDrawer.GetUserByNameAsyncTask;
 import study.project.whereareyou.NavigationDrawer.NavigationDrawerFragment;
 import study.project.whereareyou.NavigationDrawer.NavigationDrawerItem;
+import study.project.whereareyou.NavigationDrawerItemActivity.LoadProfileImage;
 import study.project.whereareyou.OOP.User;
 import study.project.whereareyou.OtherUsefullClass.ClickListener;
+import study.project.whereareyou.OtherUsefullClass.NoNetworkAvailableAcitivy;
 import study.project.whereareyou.OtherUsefullClass.RecyclerViewTouchListener;
 import study.project.whereareyou.OtherUsefullClass.SharedPreference;
 
@@ -36,13 +40,16 @@ public class MainActivity extends AppCompatActivity {
     android.support.v7.widget.RecyclerView recyclerView;
     private static final int ACTIVITY_SIGNIN_NETWORK = 1;
     private static final ArrayList<NavigationDrawerItem> items = new ArrayList<>();
+    private User currentUser = new User();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         runUIforUserConnectedNetWork();
-
+        LoadCurrentUser();
 
 
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
@@ -50,10 +57,6 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        navigationDrawerFragment =(NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer_fragment);
-
-        navigationDrawerFragment.setUp(drawerLayout,toolbar);
 
 
         //ReycycleView of Chat Groups
@@ -64,9 +67,6 @@ public class MainActivity extends AppCompatActivity {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         recyclerView.setLayoutManager(linearLayoutManager);
-
-
-
 
         //fakeUsers
         User user1 = new User("Nguyen Hoang Phat","27","Male","lazybee27102@gmail.com","hihi");
@@ -140,6 +140,24 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void LoadCurrentUser() {
+        new GetUserByNameAsyncTask(this, new GetUserByNameAsyncTask.GetUserByNameAsyncTaskResponse() {
+            @Override
+            public void processResponse(User user) {
+                if(user!=null)
+                    currentUser = user;
+                navigationDrawerFragment =(NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer_fragment);
+                navigationDrawerFragment.setUp(drawerLayout, toolbar, currentUser);
+
+            }
+        }).execute(SharedPreference.ReadFromSharedPreference(getApplicationContext(),"USER",""));
+    }
+
+    public User getCurrentUser()
+    {
+        return currentUser;
+    }
+
     public void runUIforUserConnectedNetWork()
     {
         if(!haveNetworkConnection())
@@ -182,5 +200,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
 
 }

@@ -36,21 +36,6 @@ public class ProfileActivity extends AppCompatActivity {
         helper= new MySqlOpenHelper(this);
 
         setWidget();
-
-
-
-        String userName = SharedPreference.ReadFromSharedPreference(getApplicationContext(),"USER",null);
-
-        User user = helper.getUserByName(userName);
-        String personPhotoUrl = user.getPhotoUrl();
-        if(personPhotoUrl.trim().length()!=0)
-        {
-            new LoadProfileImageRounded(imageView).execute(personPhotoUrl);
-        }
-
-        textView_profile_name.setText(user.getName());
-        textView_profile_email.setText(user.getEmail());
-        textView_profile_birthdate.setText(user.getBirthDate());
     }
 
     private void setWidget() {

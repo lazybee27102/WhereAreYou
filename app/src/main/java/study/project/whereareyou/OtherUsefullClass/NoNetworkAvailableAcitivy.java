@@ -1,10 +1,12 @@
-package study.project.whereareyou;
+package study.project.whereareyou.OtherUsefullClass;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import study.project.whereareyou.R;
 
 public class NoNetworkAvailableAcitivy extends AppCompatActivity {
     Button button_reload,button_exit;
