@@ -83,7 +83,7 @@ public class NavigationDrawerFragment extends android.support.v4.app.Fragment {
         getTextView_navigationdrawer_email = (TextView) view.findViewById(R.id.textView_navigationdrawer_gmail);
 
         String userName = SharedPreference.ReadFromSharedPreference(getContext(), "USER", null);
-        if(userName.length()!=0)
+        if(userName!=null && userName.toString().length()!=0)
         {
             User user = helper.getUserByName(userName);
             String personPhotoUrl = user.getPhotoUrl();

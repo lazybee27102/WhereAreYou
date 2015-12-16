@@ -51,7 +51,7 @@
         android:id="@+id/navigation_drawer_fragment"
         android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:name="study.project.whereareyou.NavigationDrawer.NavigationDrawerFragment"
+        class="study.project.whereareyou.NavigationDrawer.NavigationDrawerFragment"
         tools:layout="@layout/fragment_navigation_drawer"
         android:layout_gravity = "start"></fragment>
 

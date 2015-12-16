@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="10"
+        android:background="@drawable/background_signin">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:gravity="center_vertical|center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Where Are You?"
+                android:id="@+id/textView5"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:textSize="35sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:weightSum="4"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp">
+
+            <EditText
+
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/editText_Register_UserName"
+                android:background="#64FFFFFF"
+                android:hint="User Name"
+                android:textColorHint="#ffffff"
+                android:drawablePadding="5dp"
+                android:layout_weight="1"
+
+                android:paddingLeft="20dp"
+                android:textColor="#ffffff"
+                android:singleLine="true"
+                android:layout_marginBottom="5dp" />
+
+            <EditText
+                android:inputType="textEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/editText_Register_Email"
+                android:background="#64FFFFFF"
+                android:hint="Email"
+                android:textColorHint="#ffffff"
+                android:drawablePadding="5dp"
+                android:layout_weight="1"
+                android:paddingLeft="20dp"
+                android:textColor="#ffffff"
+                android:singleLine="true" />
+
+            <EditText
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/editText_Register_Password"
+                android:background="#64FFFFFF"
+
+                android:hint="Password"
+                android:textColorHint="#ffffff"
+                android:drawablePadding="5dp"
+                android:layout_weight="1"
+                android:paddingLeft="20dp"
+                android:textColor="#ffffff"
+                android:singleLine="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp" />
+
+            <EditText
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/editText_Register_PasswordRetype"
+                android:background="#64FFFFFF"
+                android:hint="Retype Password"
+                android:textColorHint="#ffffff"
+                android:drawablePadding="5dp"
+                android:layout_weight="1"
+                android:paddingLeft="20dp"
+                android:textColor="#ffffff"
+                android:singleLine="true"
+                android:layout_marginBottom="5dp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.6"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:paddingTop="25dp"
+            android:paddingBottom="25dp">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="REGISTER"
+                android:id="@+id/button_Register"
+                android:background="#00897b"
+                android:textColor="#ffffff"
+                android:textSize="16sp" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
