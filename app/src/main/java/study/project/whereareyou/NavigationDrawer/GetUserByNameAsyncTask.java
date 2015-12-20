@@ -20,7 +20,7 @@ import study.project.whereareyou.OOP.User;
 public class GetUserByNameAsyncTask extends AsyncTask<String,Void,User> {
     final String URL = "http://whereareyou.somee.com/WebService.asmx?op=DeleteUserByName";
     final String NAMESPACE ="http://tempuri.org/";
-    final String METHOD_GETUSER = "GetUserByName";
+    final String METHOD_GETUSER = "USER_GetUserByName";
     final String SOAP_ACTION = NAMESPACE+METHOD_GETUSER;
 
 
@@ -60,7 +60,7 @@ public class GetUserByNameAsyncTask extends AsyncTask<String,Void,User> {
             currentUser.setId(object.getPropertyAsString("UserId"));
             currentUser.setEmail(object.getPropertyAsString("UserEmail"));
             currentUser.setName(object.getPropertyAsString("UserName"));
-            currentUser.setLastLocation(object.getPropertyAsString("UserLasLocation"));
+            //currentUser.setLastLocation(object.getPropertyAsString("UserLasLocation"));
             //currentUser.setBirthDate("");
 
             return currentUser;

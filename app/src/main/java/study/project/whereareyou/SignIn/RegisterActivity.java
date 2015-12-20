@@ -120,8 +120,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         Context context;
         final String NAMESPACE = "http://tempuri.org/";
-        final String METHOD_ADDUSER ="AddUser";
-        final String METHOD_GETLASTUSER = "GetLastUser";
+        final String METHOD_ADDUSER ="USER_AddUserWithId";
+        final String METHOD_GETLASTUSER = "USER_GetLastUser";
         final String URL="http://whereareyou.somee.com/WebService.asmx";
         final String SOAP_ACTION_GETLASTUSER  = NAMESPACE+METHOD_GETLASTUSER;
         final String SOAP_ACTION_ADDUSER = NAMESPACE+METHOD_ADDUSER;
@@ -163,7 +163,7 @@ public class RegisterActivity extends AppCompatActivity {
                     String resultPasswordEncoded = MyEncoder.encodeFile(params[2]);
 
                     newUser.addProperty("UserPassWord",resultPasswordEncoded);
-                    newUser.addProperty("UserLasLocation", "");
+                    //newUser.addProperty("UserLasLocation", "");
 
                     request1.addSoapObject(newUser);
 
@@ -193,7 +193,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                     newUser.addProperty("UserPassWord",resultPasswordEncoded);
-                    newUser.addProperty("UserLasLocation", "");
+                    //newUser.addProperty("UserLasLocation", "");
 
                     request1.addSoapObject(newUser);
 

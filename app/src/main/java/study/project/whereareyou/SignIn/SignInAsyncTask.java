@@ -33,7 +33,7 @@ class SignInAsyncTask extends AsyncTask<String,Void,Boolean> {
     AsyncResponse delegate = null;
     final String URL = "http://whereareyou.somee.com/WebService.asmx";
     final String NAMESPACE = "http://tempuri.org/";
-    final String METHOD_GETUSER  = "GetUserByName";
+    final String METHOD_GETUSER  = "USER_GetUserByName";
     final String SOAP_ACTION = NAMESPACE+METHOD_GETUSER;
 
 
