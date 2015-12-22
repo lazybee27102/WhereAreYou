@@ -5,6 +5,24 @@ package study.project.whereareyou.OOP;
  */
 public class User {
     private String Id;
+    private String FirstName;
+    private String LastName;
+
+    public String getLastName() {
+        return LastName;
+    }
+
+    public void setLastName(String lastName) {
+        LastName = lastName;
+    }
+
+    public String getFirstName() {
+        return FirstName;
+    }
+
+    public void setFirstName(String firstName) {
+        FirstName = firstName;
+    }
 
     public User(String id, String email, String name, String photoUrl, String birthDate, String lastLocation) {
         Id = id;

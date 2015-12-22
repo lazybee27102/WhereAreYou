@@ -1,14 +1,22 @@
 package study.project.whereareyou.NavigationDrawerItemActivity;
 
+import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -24,6 +32,10 @@ public class FriendsActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     MySqlOpenHelper helper;
     ArrayList<Friend> allFriends = new ArrayList<>();
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,12 +45,9 @@ public class FriendsActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         helper = new MySqlOpenHelper(this);
-        User user = helper.getUserByName(SharedPreference.ReadFromSharedPreference(this, "USER", null));
-        if(user != null)
-        {
-            allFriends = helper.getAllFriendOfCurrentUser(user);
-        }
+
 
 
 
@@ -53,6 +62,10 @@ public class FriendsActivity extends AppCompatActivity {
 
     }
 
+
+
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
@@ -64,4 +77,6 @@ public class FriendsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

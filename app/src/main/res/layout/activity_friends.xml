@@ -6,9 +6,22 @@
     android:fitsSystemWindows="true"
 
     tools:context="study.project.whereareyou.NavigationDrawerItemActivity.ProfileActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
     <include layout="@layout/toolbar"
         android:id="@+id/toolbar"></include>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="See All Friend Request"
+        android:id="@+id/button2" />
+
+    <SearchView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchView"
+        android:layout_gravity="center_horizontal" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

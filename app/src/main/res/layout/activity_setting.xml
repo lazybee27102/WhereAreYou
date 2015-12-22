@@ -18,8 +18,8 @@
         android:minHeight="?android:attr/actionBarSize"
         app:theme="@style/ToolbarTheme"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:id="@+id/toolbar"
-        >
+        android:id="@+id/toolbar">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
@@ -64,7 +64,7 @@
             <Switch
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/switch1"
+                android:id="@+id/switch_setting_Sound"
                 android:checked="false"
                 android:paddingRight="20dp" />
         </TableRow>
@@ -84,7 +84,7 @@
             <Switch
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/switch2"
+                android:id="@+id/switch_setting_vibration"
                 android:checked="false"
                 android:paddingRight="20dp" />
         </TableRow>

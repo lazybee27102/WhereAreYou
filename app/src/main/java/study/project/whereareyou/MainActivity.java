@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 
@@ -23,10 +22,9 @@ import study.project.whereareyou.Conversation.ConversationInfo;
 import study.project.whereareyou.Conversation.ConversationMain;
 import study.project.whereareyou.Conversation.CreateConversationActivity;
 import study.project.whereareyou.Conversation.RecycleView_Conversation_Adapter;
-import study.project.whereareyou.NavigationDrawer.GetUserByNameAsyncTask;
+import study.project.whereareyou.NavigationDrawerItemActivity.GetUserByNameAsyncTask;
 import study.project.whereareyou.NavigationDrawer.NavigationDrawerFragment;
 import study.project.whereareyou.NavigationDrawer.NavigationDrawerItem;
-import study.project.whereareyou.NavigationDrawerItemActivity.LoadProfileImage;
 import study.project.whereareyou.OOP.User;
 import study.project.whereareyou.OtherUsefullClass.ClickListener;
 import study.project.whereareyou.OtherUsefullClass.NoNetworkAvailableAcitivy;
