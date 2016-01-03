@@ -1,4 +1,4 @@
-package study.project.whereareyou.NavigationDrawerItemActivity;
+package study.project.whereareyou.NavigationDrawerItemActivity.Profile;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -27,10 +27,7 @@ import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import study.project.whereareyou.OOP.User;
 import study.project.whereareyou.OtherUsefullClass.Message;
@@ -59,7 +56,7 @@ public class ProfileActivity extends AppCompatActivity {
         helper= new MySqlOpenHelper(this);
         setWidget();
         setEvent();
-        new GetUserByNameAsyncTask(this, new GetUserByNameAsyncTask.GetUserByNameAsyncTaskResponse() {
+        new GetUserByNameAsyncTask(this,"Getting your information", new GetUserByNameAsyncTask.GetUserByNameAsyncTaskResponse() {
             @Override
             public void processResponse(User user) {
                 currentUser = user;

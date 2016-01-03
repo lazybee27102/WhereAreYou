@@ -22,7 +22,7 @@ import study.project.whereareyou.Conversation.ConversationInfo;
 import study.project.whereareyou.Conversation.ConversationMain;
 import study.project.whereareyou.Conversation.CreateConversationActivity;
 import study.project.whereareyou.Conversation.RecycleView_Conversation_Adapter;
-import study.project.whereareyou.NavigationDrawerItemActivity.GetUserByNameAsyncTask;
+import study.project.whereareyou.NavigationDrawerItemActivity.Profile.GetUserByNameAsyncTask;
 import study.project.whereareyou.NavigationDrawer.NavigationDrawerFragment;
 import study.project.whereareyou.NavigationDrawer.NavigationDrawerItem;
 import study.project.whereareyou.OOP.User;
@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void LoadCurrentUser() {
-        new GetUserByNameAsyncTask(this, new GetUserByNameAsyncTask.GetUserByNameAsyncTaskResponse() {
+        new GetUserByNameAsyncTask(this,"Getting your Information...", new GetUserByNameAsyncTask.GetUserByNameAsyncTaskResponse() {
             @Override
             public void processResponse(User user) {
                 if(user!=null)
@@ -197,6 +197,11 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 
 

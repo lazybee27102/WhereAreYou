@@ -2,6 +2,7 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme_Pink" parent="AppTheme.Base.Pink"></style>
+
     <style name="AppTheme.Base.Pink" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary_pink</item>
@@ -13,6 +14,7 @@
     </style>
 
     <style name="AppTheme_Blue" parent="AppTheme.Base.Blue"></style>
+
     <style name="AppTheme.Base.Blue" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary_blue</item>
@@ -24,12 +26,13 @@
     </style>
 
 
-
-
-
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:textColorPrimary">#FFFFFF</item>
         <item name="android:textColorSecondary">#FFFFFF</item>
     </style>
+
+    <style name="AppTheme_Pink.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme_Pink.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

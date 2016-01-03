@@ -1,4 +1,4 @@
-package study.project.whereareyou.NavigationDrawerItemActivity;
+package study.project.whereareyou.NavigationDrawerItemActivity.Profile;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,9 +12,9 @@ import study.project.whereareyou.OtherUsefullClass.RoundImage;
 /**
  * Created by Administrator on 24/11/2015.
  */
-public class LoadProfileImageRounded extends AsyncTask<String,Void,Bitmap>{
+public class LoadProfileImage extends AsyncTask<String,Void,Bitmap>{
     ImageView view;
-    public LoadProfileImageRounded(ImageView imageView) {
+    public LoadProfileImage(ImageView imageView) {
         this.view = imageView;
     }
 
@@ -39,7 +39,6 @@ public class LoadProfileImageRounded extends AsyncTask<String,Void,Bitmap>{
     @Override
     protected void onPostExecute(Bitmap bitmap) {
         super.onPostExecute(bitmap);
-        RoundImage roundImage = new RoundImage(bitmap);
-        view.setImageDrawable(roundImage);
+        view.setImageBitmap(bitmap);
     }
 }

@@ -66,7 +66,7 @@ public class RecycleView_Conversation_Adapter extends RecyclerView.Adapter<Recyc
 
         public ConversationViewHolder(View itemView) {
             super(itemView);
-            textView_name_key_user = (TextView)itemView.findViewById(R.id.textView_friend_name);
+            textView_name_key_user = (TextView)itemView.findViewById(R.id.textView_friendrequest_name);
             textView_date_created = (TextView)itemView.findViewById(R.id.textView_date_created);
             textView_detail = (TextView)itemView.findViewById(R.id.textView_detail);
             textView_number_user = (TextView) itemView.findViewById(R.id.textView_number_user);

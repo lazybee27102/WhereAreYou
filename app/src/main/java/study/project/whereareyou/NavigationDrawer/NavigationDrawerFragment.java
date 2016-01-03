@@ -13,7 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,15 +25,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import study.project.whereareyou.MainActivity;
-import study.project.whereareyou.NavigationDrawerItemActivity.FriendsActivity;
-import study.project.whereareyou.NavigationDrawerItemActivity.LoadProfileImageRounded;
-import study.project.whereareyou.NavigationDrawerItemActivity.ProfileActivity;
+import study.project.whereareyou.NavigationDrawerItemActivity.Friend.FriendsActivity;
+import study.project.whereareyou.NavigationDrawerItemActivity.Profile.ProfileActivity;
 import study.project.whereareyou.NavigationDrawerItemActivity.SettingActivity;
 import study.project.whereareyou.OOP.User;
 import study.project.whereareyou.OtherUsefullClass.RecyclerViewTouchListener;
-import study.project.whereareyou.OtherUsefullClass.SharedPreference;
 import study.project.whereareyou.R;
+import study.project.whereareyou.SignIn.SignInActivity;
 import study.project.whereareyou.SqlHelper.MySqlOpenHelper;
 
 /**
@@ -94,10 +92,10 @@ public class NavigationDrawerFragment extends android.support.v4.app.Fragment {
         recyclerView_navi.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView_navi.addOnItemTouchListener(new RecyclerViewTouchListener(getActivity(), recyclerView_navi, new study.project.whereareyou.OtherUsefullClass.ClickListener() {
             @Override
-            public void onClick(RecyclerView.ViewHolder view, int position) {
-                RelativeLayout relativeLayout = (RelativeLayout) view.itemView.findViewById(R.id.background_item_nav);
-                ImageView imageView = (ImageView) view.itemView.findViewById(R.id.imageView_image_item);
-                TextView textView = (TextView) view.itemView.findViewById(R.id.textView_name_item);
+            public void onClick(final RecyclerView.ViewHolder view, int position) {
+                final RelativeLayout relativeLayout = (RelativeLayout) view.itemView.findViewById(R.id.background_item_nav);
+                final ImageView imageView = (ImageView) view.itemView.findViewById(R.id.imageView_image_item);
+                final TextView textView = (TextView) view.itemView.findViewById(R.id.textView_name_item);
                 if (position<5) {
 
                     relativeLayout.setBackgroundResource(R.color.colorPrimaryLight_pink);
@@ -125,12 +123,20 @@ public class NavigationDrawerFragment extends android.support.v4.app.Fragment {
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        Intent i = new Intent(getActivity(), SignInActivity.class);
+                                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(i);
                                         getActivity().finish();
+
                                     }
                                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.cancel();
+                                        relativeLayout.setBackgroundColor(Color.WHITE);
+                                        textView.setTextColor(Color.BLACK);
+                                        imageView.setColorFilter(Color.BLACK,PorterDuff.Mode.SRC_IN);
+
                                     }
                                 });
                         builder.create().show();

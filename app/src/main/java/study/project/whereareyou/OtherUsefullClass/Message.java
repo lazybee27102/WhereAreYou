@@ -3,6 +3,8 @@ package study.project.whereareyou.OtherUsefullClass;
 import android.content.Context;
 import android.widget.Toast;
 
+import study.project.whereareyou.NavigationDrawerItemActivity.Friend.FriendsActivity;
+
 /**
  * Created by Administrator on 23/11/2015.
  */
@@ -12,5 +14,6 @@ public class Message {
     {
         Toast.makeText(context, mess, Toast.LENGTH_SHORT).show();
     }
+
 
 }

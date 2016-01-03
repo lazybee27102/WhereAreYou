@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.android.gms.appdatasearch.RegisterSectionInfo;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -29,7 +32,6 @@ import study.project.whereareyou.SqlHelper.MySqlOpenHelper;
 public class RegisterActivity extends AppCompatActivity {
     EditText editText_userName,editText_email,editText_password,editText_retypePassword;
     Button button_Register;
-    boolean canRegister = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,48 +45,53 @@ public class RegisterActivity extends AppCompatActivity {
         button_Register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (editText_userName.getText().toString().trim().length() <= 6 || editText_userName.getText().toString().trim().length() >= 15) {
-                    canRegister = false;
-                    Message.printMessage(RegisterActivity.this,"Your User Name must be beween 7 - 14 characters");
-                }else
-                {
-                    canRegister = true;
-                }
+            StringBuilder allFouls = new StringBuilder("");
+            if(editText_userName.getText().toString().trim().length()==0)
+                allFouls.append("- Please Insert Your UserName \n");
+            else
+            {
+                if(editText_userName.getText().toString().trim().length()<6 || editText_userName.getText().toString().trim().length()>12)
+                allFouls.append("The number of characters of UserName is 6-12 \n");
+            }
 
-                if (editText_email.getText().length()==0) {
-                    canRegister = false;
-                    Message.printMessage(RegisterActivity.this,"You must type your Email address");
-                }else
-                {
-                    if(isEmailValid(editText_email.getText().toString()) != true)
-                        Message.printMessage(RegisterActivity.this,"Wrong Email Adress");
-                    else
-                        canRegister = true;
-                }
 
-                if(editText_password.getText().toString().trim().length() <= 6 || editText_password.getText().toString().trim().length() >= 15)
-                {
-                    Message.printMessage(RegisterActivity.this,"Your password must be beween 7 - 14 characters");
-                    canRegister = false;
-                }else
-                    canRegister = true;
+            if(editText_email.getText().toString().trim().length()==0)
+                allFouls.append("- Please Insert Your Email \n");
+            else
+            {
+                if(!isEmailValid(editText_email.getText().toString().trim()))
+                    allFouls.append("- Wrong Email Address \n");
+            }
 
-                if(!editText_password.getText().toString().equals(editText_retypePassword.getText().toString()))
-                {
-                    Message.printMessage(RegisterActivity.this,"Your password is not matched");
-                    canRegister = false;
-                }else
-                {
-                    canRegister = true;
-                }
+            if(editText_password.getText().toString().trim().length()==0)
+                allFouls.append("- Please Insert Your PassWord \n");
+            else
+            {
+                if(editText_password.getText().toString().trim().length()<6 || editText_password.getText().toString().trim().length()>12)
+                    allFouls.append("The number of characters of Password is 6-12 \n");
+            }
 
-                if(canRegister)
-                {
 
-                    new RegisterAsyncTask(RegisterActivity.this).execute(new String[]{String.valueOf(editText_userName.getText().toString().trim()),
-                            String.valueOf(editText_email.getText().toString().trim()),
-                            String.valueOf(editText_password.getText().toString().trim())});
-                }
+            if(editText_retypePassword.getText().toString().trim().length()==0)
+                allFouls.append("- Please retype Your PassWord \n");
+
+            if(editText_password.getText().toString().trim().length()!=0 && editText_retypePassword.getText().toString().trim().length()!=0 && !editText_password.getText().toString().trim().equals(editText_retypePassword.getText().toString().trim()) )
+                allFouls.append("- Your passwords isnot matched \n");
+
+            if(allFouls.toString().equals(""))
+            {
+                new RegisterAsyncTask(RegisterActivity.this).execute(new String[]{String.valueOf(editText_userName.getText().toString().trim()),
+                        String.valueOf(editText_email.getText().toString().trim()),
+                        String.valueOf(editText_password.getText().toString().trim())});
+            }else
+            {
+                Toast.makeText(RegisterActivity.this,allFouls.toString(), Toast.LENGTH_LONG).show();
+            }
+
+
+
+
+
 
 
             }
