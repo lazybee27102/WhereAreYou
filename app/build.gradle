@@ -31,4 +31,5 @@ dependencies {
     compile 'io.github.enzokie:typerlib:1.0.0'
     compile 'com.android.support:design:23.1.0'
     compile files('ksoap2-android-assembly-2.6.0-jar-with-dependencies.jar')
+    compile files('C:/Users/Administrator/Desktop/Nhung/WhereAreYou/.idea/libraries/joda-time-2.2.jar')
 }

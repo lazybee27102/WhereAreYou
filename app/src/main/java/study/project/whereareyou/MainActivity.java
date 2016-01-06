@@ -2,6 +2,7 @@ package study.project.whereareyou;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 
 import com.melnykov.fab.FloatingActionButton;
@@ -27,35 +29,47 @@ import study.project.whereareyou.NavigationDrawer.NavigationDrawerFragment;
 import study.project.whereareyou.NavigationDrawer.NavigationDrawerItem;
 import study.project.whereareyou.OOP.User;
 import study.project.whereareyou.OtherUsefullClass.ClickListener;
+import study.project.whereareyou.OtherUsefullClass.Message;
 import study.project.whereareyou.OtherUsefullClass.NoNetworkAvailableAcitivy;
 import study.project.whereareyou.OtherUsefullClass.RecyclerViewTouchListener;
 import study.project.whereareyou.OtherUsefullClass.SharedPreference;
+import study.project.whereareyou.SqlHelper.MySqlOpenHelper;
 
 public class MainActivity extends AppCompatActivity {
+    MySqlOpenHelper helper = new MySqlOpenHelper(this);
+
     DrawerLayout drawerLayout;
     NavigationDrawerFragment navigationDrawerFragment;
     android.support.v7.widget.Toolbar toolbar;
     android.support.v7.widget.RecyclerView recyclerView;
     private static final int ACTIVITY_SIGNIN_NETWORK = 1;
-    private static final ArrayList<NavigationDrawerItem> items = new ArrayList<>();
-    private User currentUser = new User();
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         runUIforUserConnectedNetWork();
-        LoadCurrentUser();
 
-
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navigationDrawerFragment =(NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer_fragment);
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
+
+        User user =helper.getUserByName(SharedPreference.ReadFromSharedPreference(getApplicationContext(),"USER",""));
+        if(user==null)
+        {
+            LoadCurrentUser();
+        }
+        else
+        {
+
+            navigationDrawerFragment.setUp(drawerLayout, toolbar, user);
+        }
 
         //ReycycleView of Chat Groups
         recyclerView = (android.support.v7.widget.RecyclerView) findViewById(R.id.recycleview_chatgroup_list);
@@ -67,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         //fakeUsers
-        User user1 = new User("Nguyen Hoang Phat","27","Male","lazybee27102@gmail.com","hihi");
-        User user2 = new User("Nguyen Hoang Phat","27","Male","lazybee27102@gmail.com","hihi");
-        User user3 = new User("Nguyen Hoang Phat","27","Male","lazybee27102@gmail.com","hihi");
+        User user1 = new User("Nguyen Hoang Phat","27","Male","lazybee27102@gmail.com","hihi","25","dddd");
+        User user2 = new User("Nguyen Hoang Phat","27","Male","lazybee27102@gmail.com","hihi","25","dddd");
+        User user3 = new User("Nguyen Hoang Phat","27","Male","lazybee27102@gmail.com","hihi","25","dddd");
         ArrayList<User> users = new ArrayList<>();
         users.add(user1);
         users.add(user2);
@@ -143,18 +157,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void processResponse(User user) {
                 if(user!=null)
-                    currentUser = user;
-                navigationDrawerFragment =(NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer_fragment);
-                navigationDrawerFragment.setUp(drawerLayout, toolbar, currentUser);
+                {
+                    helper.insertUser(user);
+                    navigationDrawerFragment.setUp(drawerLayout, toolbar, user);
+                }
+
 
             }
         }).execute(SharedPreference.ReadFromSharedPreference(getApplicationContext(),"USER",""));
     }
 
-    public User getCurrentUser()
-    {
-        return currentUser;
-    }
 
     public void runUIforUserConnectedNetWork()
     {

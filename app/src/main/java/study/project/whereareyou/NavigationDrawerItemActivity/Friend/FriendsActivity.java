@@ -20,7 +20,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import study.project.whereareyou.NavigationDrawerItemActivity.Profile.GetUserByNameAsyncTask;
-import study.project.whereareyou.OOP.Friend;
 import study.project.whereareyou.OOP.User;
 import study.project.whereareyou.OtherUsefullClass.Message;
 import study.project.whereareyou.OtherUsefullClass.SharedPreference;
@@ -31,7 +30,6 @@ public class FriendsActivity extends AppCompatActivity {
     Toolbar toolbar;
     RecyclerView recyclerView;
     MySqlOpenHelper helper;
-    ArrayList<Friend> allFriends = new ArrayList<>();
 
     Button button_search_friend,button_seeFriendRequest;
     EditText editText_friendName;
@@ -88,7 +86,7 @@ public class FriendsActivity extends AppCompatActivity {
                             {
                                 CurrentUser = user;
                                 friendLayout.setVisibility(View.VISIBLE);
-                                textView_friendName.setText(user.getName());
+                                textView_friendName.setText(user.getUserName());
                             }else
                                 Message.printMessage(FriendsActivity.this,"Can't find that UserName");
                         }
@@ -124,7 +122,7 @@ public class FriendsActivity extends AppCompatActivity {
                                         } else
                                             Message.printMessage(FriendsActivity.this, "Add Friend Failed");
                                     }
-                                }).execute(new String[]{SharedPreference.ReadFromSharedPreference(getApplicationContext(), "USER", "").toString(), CurrentUser.getName()});
+                                }).execute(new String[]{SharedPreference.ReadFromSharedPreference(getApplicationContext(), "USER", "").toString(), CurrentUser.getUserName()});
 
 
                             }

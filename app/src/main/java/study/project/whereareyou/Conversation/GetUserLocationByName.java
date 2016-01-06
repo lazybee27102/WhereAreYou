@@ -1,9 +1,8 @@
-package study.project.whereareyou.NavigationDrawerItemActivity.Profile;
+package study.project.whereareyou.Conversation;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -19,7 +18,7 @@ import study.project.whereareyou.OOP.User;
 /**
  * Created by Administrator on 16/12/2015.
  */
-public class GetUserByNameAsyncTask extends AsyncTask<String,Void,User> {
+public class GetUserLocationByName extends AsyncTask<String,Void,String> {
     final String URL = "http://whereareyou.somee.com/WebService.asmx";
     final String NAMESPACE ="http://tempuri.org/";
     final String METHOD_GETUSER = "USER_GetUserByName";
@@ -29,14 +28,14 @@ public class GetUserByNameAsyncTask extends AsyncTask<String,Void,User> {
 
     public interface GetUserByNameAsyncTaskResponse
     {
-        void processResponse(User user);
+        void processResponse(String string);
     }
 
     GetUserByNameAsyncTaskResponse delegate;
     Context context;
 
 
-    public GetUserByNameAsyncTask(Context context,String textInProgressDialog,GetUserByNameAsyncTaskResponse delegate) {
+    public GetUserLocationByName(Context context, String textInProgressDialog, GetUserByNameAsyncTaskResponse delegate) {
         this.context = context;
         this.delegate = delegate;
         progressDialog = new ProgressDialog(context);
@@ -46,7 +45,7 @@ public class GetUserByNameAsyncTask extends AsyncTask<String,Void,User> {
     }
 
     @Override
-    protected User doInBackground(String... params) {
+    protected String doInBackground(String... params) {
         String userName = params[0];
         SoapObject request = new SoapObject(NAMESPACE,METHOD_GETUSER);
         request.addProperty("name",userName);
@@ -59,37 +58,15 @@ public class GetUserByNameAsyncTask extends AsyncTask<String,Void,User> {
             httpTransportSE.call(SOAP_ACTION,envelope);
             SoapObject object = (SoapObject) envelope.getResponse();
 
-            User currentUser = null;
+            String UserlastLocation = "";
             if(object!=null)
             {
-
-                currentUser = new User();
-                SoapPrimitive id = (SoapPrimitive) object.getPropertySafely("UserId", null);
-                SoapPrimitive email = (SoapPrimitive) object.getPropertySafely("UserEmail",null);
-                SoapPrimitive name = (SoapPrimitive) object.getPropertySafely("UserName",null);
-                SoapPrimitive fname = (SoapPrimitive) object.getPropertySafely("UserFirstName",null);
-                SoapPrimitive lname = (SoapPrimitive) object.getPropertySafely("UserLastName",null);
                 SoapPrimitive lastLocation = (SoapPrimitive) object.getPropertySafely("UserLastLocation",null);
-
-                SoapPrimitive birthdate = (SoapPrimitive) object.getPropertySafely("UserBirthdate",null);
-
-                if(id!=null)
-                    currentUser.setId(id.toString());
-                if(email!=null)
-                    currentUser.setEmail(email.toString());
-                if(name!=null)
-                    currentUser.setUserName(name.toString());
-                if(fname!=null)
-                    currentUser.setFirstName(fname.toString());
-                if(lname!=null)
-                    currentUser.setLastName(lname.toString());
                 if(lastLocation!=null)
-                    currentUser.setLastLocation(lastLocation.toString());
-                if(birthdate!=null)
-                    currentUser.setBirthDate(birthdate.toString().substring(0,10));
+                    UserlastLocation = lastLocation.toString();
             }
 
-            return currentUser;
+            return UserlastLocation;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (XmlPullParserException e) {
@@ -101,11 +78,10 @@ public class GetUserByNameAsyncTask extends AsyncTask<String,Void,User> {
     }
 
     @Override
-    protected void onPostExecute(User user) {
-        super.onPostExecute(user);
+    protected void onPostExecute(String string) {
+        super.onPostExecute(string);
         if(progressDialog.isShowing())
             progressDialog.dismiss();
-        delegate.processResponse(user);
-
+        delegate.processResponse(string);
     }
 }

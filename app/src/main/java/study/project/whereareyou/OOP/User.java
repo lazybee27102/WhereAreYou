@@ -7,47 +7,22 @@ public class User {
     private String Id;
     private String FirstName;
     private String LastName;
-
-    public String getLastName() {
-        return LastName;
-    }
-
-    public void setLastName(String lastName) {
-        LastName = lastName;
-    }
-
-    public String getFirstName() {
-        return FirstName;
-    }
-
-    public void setFirstName(String firstName) {
-        FirstName = firstName;
-    }
-
-    public User(String id, String email, String name, String photoUrl, String birthDate, String lastLocation) {
-        Id = id;
-        Email = email;
-        Name = name;
-        PhotoUrl = photoUrl;
-        BirthDate = birthDate;
-        LastLocation = lastLocation;
-    }
-
-    public User(String email, String name, String photoUrl, String birthDate, String lastLocation) {
-        Email = email;
-        Name = name;
-        PhotoUrl = photoUrl;
-        BirthDate = birthDate;
-        LastLocation = lastLocation;
-    }
-
     private String Email;
-    private String Name;
-    private String PhotoUrl;
+    private String UserName;
     private String BirthDate;
     private String LastLocation;
 
     public User() {
+    }
+
+    public User(String id,String email,  String userName,String firstName, String lastName,  String birthDate, String lastLocation) {
+        Id = id;
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+        UserName = userName;
+        BirthDate = birthDate;
+        LastLocation = lastLocation;
     }
 
     public String getId() {
@@ -58,6 +33,22 @@ public class User {
         Id = id;
     }
 
+    public String getFirstName() {
+        return FirstName;
+    }
+
+    public void setFirstName(String firstName) {
+        FirstName = firstName;
+    }
+
+    public String getLastName() {
+        return LastName;
+    }
+
+    public void setLastName(String lastName) {
+        LastName = lastName;
+    }
+
     public String getEmail() {
         return Email;
     }
@@ -66,20 +57,12 @@ public class User {
         Email = email;
     }
 
-    public String getName() {
-        return Name;
+    public String getUserName() {
+        return UserName;
     }
 
-    public void setName(String name) {
-        Name = name;
-    }
-
-    public String getPhotoUrl() {
-        return PhotoUrl;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        PhotoUrl = photoUrl;
+    public void setUserName(String userName) {
+        UserName = userName;
     }
 
     public String getBirthDate() {

@@ -29,6 +29,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
+import study.project.whereareyou.NavigationDrawerItemActivity.Profile.GetUserByNameAsyncTask;
+import study.project.whereareyou.OtherUsefullClass.Message;
+import study.project.whereareyou.OtherUsefullClass.SharedPreference;
 import study.project.whereareyou.R;
 
 /**
@@ -37,7 +42,7 @@ import study.project.whereareyou.R;
 public class Conversation_Map_Fragment extends android.support.v4.app.Fragment {
     MapView mMapView;
     private GoogleMap googleMap;
-    private LocationManager locationManager;
+    ArrayList<String> locations = new ArrayList<>();
 
     public Conversation_Map_Fragment() {
     }
@@ -52,7 +57,7 @@ public class Conversation_Map_Fragment extends android.support.v4.app.Fragment {
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
-        mMapView.onResume();// needed to get the map to display immediately
+        mMapView.onResume();// needed to get the map to display immediately*/
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -74,99 +79,48 @@ public class Conversation_Map_Fragment extends android.support.v4.app.Fragment {
         }
         googleMap.setMyLocationEnabled(true);
 
-        //Location
-        LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-
-        // Creating a criteria object to retrieve provider
-        Criteria criteria = new Criteria();
-
-        // Getting the name of the best provider
-        String provider = locationManager.getBestProvider(criteria, true);
-
-        // Getting Current Location
-        Location location = locationManager.getLastKnownLocation(provider);
-
-        if(location!=null) {
-            // Getting latitude of the current location
-            double latitude = location.getLatitude();
-
-            // Getting longitude of the current location
-            double longitude = location.getLongitude();
-
-            // Creating a LatLng object for the current location
-            LatLng latLng = new LatLng(latitude, longitude);
 
 
 
 
-        // create marker
+
+
+        /*LatLng latLng = new LatLng(10.87463646,106.66888988);
         MarkerOptions marker = new MarkerOptions().position(
-               latLng).title("Hello Maps");
-
-        // Changing marker icon
+                latLng).title("Hello");
         marker.icon(BitmapDescriptorFactory
                 .defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-
-            MarkerOptions marker1 = new MarkerOptions().position(
-                    new LatLng(latitude+10,longitude+20)).title("Hello Maps");
-
-            // Changing marker icon
-            marker.icon(BitmapDescriptorFactory
-                    .defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-
-            // adding marker
         googleMap.addMarker(marker);
-            googleMap.addMarker(marker1);
-
-
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(latLng).zoom(12).build();
         googleMap.animateCamera(CameraUpdateFactory
-                .newCameraPosition(cameraPosition));
+                .newCameraPosition(cameraPosition));*/
 
-
-
-        }
-        //Locaition
         return v;
     }
 
-
-    private void TuiDangODau() {
-
-        LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        Location lastLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-        if (lastLocation != null) {
-            LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
-
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(latLng)      // Sets the center of the map to location user
-                    .zoom(15)                   // Sets the zoom
-                    .bearing(90)                // Sets the orientation of the camera to east
-                    .tilt(40)                   // Sets the tilt of the camera to 30 degrees
-                    .build();                   // Creates a CameraPosition from the builder
-            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-//Thêm MarketOption cho Map:
-            MarkerOptions option = new MarkerOptions();
-            option.title("Chỗ Tui đang ngồi đó");
-            option.snippet("Gần làng SOS");
-            option.position(latLng);
-            Marker currentMarker = googleMap.addMarker(option);
-            currentMarker.showInfoWindow();
-        }
+    @Override
+    public void onStart() {
+        super.onStart();
+        String User = SharedPreference.ReadFromSharedPreference(getContext(), "USER", "");
+        new GetUserLocationByName(getContext(), "Getting Location of " + User, new GetUserLocationByName.GetUserByNameAsyncTaskResponse() {
+            @Override
+            public void processResponse(String string) {
+                if(string!=null)
+                {
+                    String location[] = string.split("-");
+                    LatLng latLng = new LatLng(Double.parseDouble(location[0]),Double.parseDouble(location[1]));
+                    MarkerOptions marker = new MarkerOptions().position(
+                            latLng).title("Hello");
+                    marker.icon(BitmapDescriptorFactory
+                            .defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+                    googleMap.addMarker(marker);
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(latLng).zoom(12).build();
+                    googleMap.animateCamera(CameraUpdateFactory
+                            .newCameraPosition(cameraPosition));
+                }
+            }
+        }).execute(User);
     }
-
 }

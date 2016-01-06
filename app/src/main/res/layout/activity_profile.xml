@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView_profile_gmail"
             android:layout_centerHorizontal="true"
-            android:text="BirthDate"
+            android:text="BirthDay"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <LinearLayout

@@ -1,5 +1,6 @@
 package study.project.whereareyou.Conversation;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -18,12 +20,16 @@ import java.util.ArrayList;
 
 import io.github.typer.Font;
 import io.github.typer.Typer;
+import study.project.whereareyou.OtherUsefullClass.Message;
+import study.project.whereareyou.OtherUsefullClass.SharedPreference;
 import study.project.whereareyou.R;
 
 public class ConversationMain extends AppCompatActivity {
     Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager viewPager;
+
+    UpdateLocationAsyncTask update;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,9 @@ public class ConversationMain extends AppCompatActivity {
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
         setTabIcon(tabLayout);
+
+         update= (UpdateLocationAsyncTask) new UpdateLocationAsyncTask(ConversationMain.this).execute(new String[]{SharedPreference.ReadFromSharedPreference(getApplicationContext(), "USER", "")});
+
 
     }
 
@@ -106,5 +115,16 @@ public class ConversationMain extends AppCompatActivity {
         {
             fragmentsList.clear();
         }
+
+
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("DEBUGGG DESTROY", " RUNNNN");
+        update.cancel(true);
+    }
+
+
 }

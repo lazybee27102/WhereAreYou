@@ -37,7 +37,7 @@ public class RecycleView_Conversation_Adapter extends RecyclerView.Adapter<Recyc
     @Override
     public void onBindViewHolder(ConversationViewHolder holder, int position) {
         ConversationInfo ci = listConversation.get(position);
-        holder.textView_name_key_user.setText(ci.getKeyUser().getName());
+        holder.textView_name_key_user.setText(ci.getKeyUser().getUserName());
         holder.textView_name_key_user.setTypeface(Typer.set(context).getFont(Font.ROBOTO_BOLD));
         holder.textView_detail.setText(ci.getAllMessages().get(ci.getAllMessages().size()-1));
         holder.textView_detail.setTypeface(Typer.set(context).getFont(Font.ROBOTO_BLACK));

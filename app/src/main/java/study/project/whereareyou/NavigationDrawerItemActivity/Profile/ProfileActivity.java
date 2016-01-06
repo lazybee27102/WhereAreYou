@@ -60,8 +60,8 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void processResponse(User user) {
                 currentUser = user;
-                if(currentUser.getName()!=null)
-                    textView_profile_name.setText(currentUser.getName());
+                if(currentUser.getUserName()!=null)
+                    textView_profile_name.setText(currentUser.getUserName());
                 if(currentUser.getBirthDate()!=null)
                     textView_profile_birthdate.setText(currentUser.getBirthDate());
                 if(currentUser.getEmail()!=null)
@@ -96,8 +96,8 @@ public class ProfileActivity extends AppCompatActivity {
                 else
                 {
                     //Name,Fname,Lname,Long,Lat,Birthday
-                    if(textView_profile_birthdate.getText().length()!=0)
-                        new UpdateInformationAsyncTask(ProfileActivity.this).execute(currentUser.getName(),editText_fName.getText().toString().trim(),
+                    if(!textView_profile_birthdate.getText().equals("BirthDay"))
+                        new UpdateInformationAsyncTask(ProfileActivity.this).execute(currentUser.getUserName(),editText_fName.getText().toString().trim(),
                                 editText_lName.getText().toString().trim(),"",textView_profile_birthdate.getText().toString());
                     else
                         Message.printMessage(ProfileActivity.this,"Please set your birthdate by CLick on Calendar!");
@@ -161,78 +161,6 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    public class UpdateInformationAsyncTask extends AsyncTask<String,Void,Boolean>
-    {
-        final String URL = "http://whereareyou.somee.com/WebService.asmx?op=USER_UpdateUserInformation";
-        final String NAMESPACE = "http://tempuri.org/";
-        final String METHOD_UPDATEINFORMATION = "USER_UpdateUserInformation";
 
-        ProgressDialog progressDialog;
-        Context context;
-
-        public UpdateInformationAsyncTask(Context context) {
-            this.context = context;
-            progressDialog = new ProgressDialog(context);
-            progressDialog.setMessage("Updating your Information");
-            progressDialog.show();
-        }
-
-        @Override
-        protected Boolean doInBackground(String... params) {
-            //Name,Fname,Lname,last,Birthday
-            String nameInsert = params[0];
-            String fname = params[1];
-            String lname = params[2];
-            String lastLocation = "Don't know";
-            if(params[3].toString().length()!=0)
-            {
-                lastLocation = params[3];
-            }
-            String birthdate = params[4];
-
-            try {
-                SoapObject request = new SoapObject(NAMESPACE,METHOD_UPDATEINFORMATION);
-                request.addProperty("name",nameInsert);
-                request.addProperty("fName",fname);
-                request.addProperty("lName",lname);
-                request.addProperty("birthDate",birthdate);
-                request.addProperty("lastLocation",lastLocation);
-
-
-                SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-                envelope.dotNet = true;
-                envelope.setOutputSoapObject(request);
-                HttpTransportSE httpTransportSE = new HttpTransportSE(URL);
-
-
-                httpTransportSE.call(NAMESPACE +METHOD_UPDATEINFORMATION,envelope);
-                SoapPrimitive soapPrimitive = (SoapPrimitive) envelope.getResponse();
-                if(Boolean.parseBoolean(soapPrimitive.toString()))
-                    return true;
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (XmlPullParserException e) {
-                e.printStackTrace();
-            }
-
-
-            return false;
-        }
-
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-            if(progressDialog.isShowing())
-                progressDialog.dismiss();
-            if(aBoolean)
-                Message.printMessage(context,"Update Information Successfully");
-            else
-                Message.printMessage(context,"Update Failed");
-
-        }
-
-    }
 
 }

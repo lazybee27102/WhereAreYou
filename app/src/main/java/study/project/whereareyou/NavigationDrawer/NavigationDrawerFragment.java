@@ -167,7 +167,7 @@ public class NavigationDrawerFragment extends android.support.v4.app.Fragment {
     public void setUp(DrawerLayout drawerLayout, Toolbar toolbar,User user) {
         this.user= user;
 
-        textView_navigationdrawer_name.setText(user.getName());
+        textView_navigationdrawer_name.setText(user.getUserName());
         getTextView_navigationdrawer_email.setText(user.getEmail());
 
         mDrawerLayout = drawerLayout;
