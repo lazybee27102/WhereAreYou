@@ -63,7 +63,7 @@ public class UpdateLocationAsyncTask extends AsyncTask<String, Void, Void> {
                 break;
             }
 
-            SystemClock.sleep(10000);
+            SystemClock.sleep(15000);
         }
         return null;
     }

@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.app.ActivityCompat;
@@ -29,9 +31,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import study.project.whereareyou.NavigationDrawerItemActivity.Profile.GetUserByNameAsyncTask;
+import study.project.whereareyou.OOP.User;
 import study.project.whereareyou.OtherUsefullClass.Message;
 import study.project.whereareyou.OtherUsefullClass.SharedPreference;
 import study.project.whereareyou.R;
@@ -42,8 +47,7 @@ import study.project.whereareyou.R;
 public class Conversation_Map_Fragment extends android.support.v4.app.Fragment {
     MapView mMapView;
     private GoogleMap googleMap;
-    ArrayList<String> locations = new ArrayList<>();
-
+    private ConversationMain main;
     public Conversation_Map_Fragment() {
     }
 
@@ -51,12 +55,9 @@ public class Conversation_Map_Fragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-
         View v = inflater.inflate(R.layout.fragment_conversation__map_, container, false);
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
-
         mMapView.onResume();// needed to get the map to display immediately*/
 
         try {
@@ -66,7 +67,6 @@ public class Conversation_Map_Fragment extends android.support.v4.app.Fragment {
         }
 
         googleMap = mMapView.getMap();
-
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -78,49 +78,77 @@ public class Conversation_Map_Fragment extends android.support.v4.app.Fragment {
             // for ActivityCompat#requestPermissions for more details.
         }
         googleMap.setMyLocationEnabled(true);
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
 
+        setRetainInstance(true);
 
-
-
-
-
-
-        /*LatLng latLng = new LatLng(10.87463646,106.66888988);
-        MarkerOptions marker = new MarkerOptions().position(
-                latLng).title("Hello");
-        marker.icon(BitmapDescriptorFactory
-                .defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-        googleMap.addMarker(marker);
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(latLng).zoom(12).build();
-        googleMap.animateCamera(CameraUpdateFactory
-                .newCameraPosition(cameraPosition));*/
 
         return v;
     }
 
-    @Override
+    /*@Override
     public void onStart() {
         super.onStart();
-        String User = SharedPreference.ReadFromSharedPreference(getContext(), "USER", "");
-        new GetUserLocationByName(getContext(), "Getting Location of " + User, new GetUserLocationByName.GetUserByNameAsyncTaskResponse() {
-            @Override
-            public void processResponse(String string) {
-                if(string!=null)
-                {
-                    String location[] = string.split("-");
-                    LatLng latLng = new LatLng(Double.parseDouble(location[0]),Double.parseDouble(location[1]));
-                    MarkerOptions marker = new MarkerOptions().position(
-                            latLng).title("Hello");
-                    marker.icon(BitmapDescriptorFactory
-                            .defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-                    googleMap.addMarker(marker);
-                    CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(latLng).zoom(12).build();
-                    googleMap.animateCamera(CameraUpdateFactory
-                            .newCameraPosition(cameraPosition));
-                }
+
+    }*/
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser)
+        {
+            String UserName = SharedPreference.ReadFromSharedPreference(getContext(), "USER", "");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                new GetUserLocationByName(getContext(), new GetUserLocationByName.getResponse() {
+                    @Override
+                    public void ProcessHashMap(HashMap<String, String> hashMap) {
+                        if(hashMap.size()!=0)
+                            AddMakerToGoogleMap(googleMap,hashMap);
+                    }
+                }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,main.getUserNames());
+            } else {
+                main.getUpdate().cancel(true);
+                new GetUserLocationByName(getContext(), new GetUserLocationByName.getResponse() {
+                    @Override
+                    public void ProcessHashMap(HashMap<String, String> hashMap) {
+                        if(hashMap.size()!=0)
+                            AddMakerToGoogleMap(googleMap,hashMap);
+                    }
+                }).execute(main.getUserNames());
             }
-        }).execute(User);
+        }
+    }
+
+    public void AddMakerToGoogleMap(GoogleMap map,HashMap<String,String> hashMap)
+    {
+        map.clear();
+        for (HashMap.Entry<String, String> entry : hashMap.entrySet())
+        {
+            String UserName = entry.getKey();
+            String[] Location = entry.getValue().split("-");
+            Double latitude = Double.parseDouble(Location[0]);
+            Double longtitude = Double.parseDouble(Location[1]);
+
+            LatLng latLng = new LatLng(latitude,longtitude);
+            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(UserName);
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+            markerOptions.title(UserName);
+            Marker CurrentMarker = map.addMarker(markerOptions);
+            CurrentMarker.showInfoWindow();
+            if(UserName.equals(SharedPreference.ReadFromSharedPreference(getContext(),"USER","")))
+            {
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(latLng).zoom(12).build();
+                map.animateCamera(CameraUpdateFactory
+                        .newCameraPosition(cameraPosition));
+            }
+
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.main = (ConversationMain) context;
     }
 }

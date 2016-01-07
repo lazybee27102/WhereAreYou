@@ -12,76 +12,77 @@ import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import study.project.whereareyou.OOP.User;
 
 /**
  * Created by Administrator on 16/12/2015.
  */
-public class GetUserLocationByName extends AsyncTask<String,Void,String> {
+public class GetUserLocationByName extends AsyncTask<ArrayList<String>,Void,HashMap<String,String>> {
     final String URL = "http://whereareyou.somee.com/WebService.asmx";
     final String NAMESPACE ="http://tempuri.org/";
     final String METHOD_GETUSER = "USER_GetUserByName";
     final String SOAP_ACTION = NAMESPACE+METHOD_GETUSER;
 
-    ProgressDialog progressDialog;
 
-    public interface GetUserByNameAsyncTaskResponse
+    ProgressDialog progressDialog;
+    Context context;
+    getResponse delegate;
+
+    public interface getResponse
     {
-        void processResponse(String string);
+        void ProcessHashMap(HashMap<String,String> hashMap);
     }
 
-    GetUserByNameAsyncTaskResponse delegate;
-    Context context;
-
-
-    public GetUserLocationByName(Context context, String textInProgressDialog, GetUserByNameAsyncTaskResponse delegate) {
+    public GetUserLocationByName(Context context,getResponse delegate) {
         this.context = context;
         this.delegate = delegate;
         progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage(textInProgressDialog);
-        progressDialog.show();
-
+        progressDialog.setMessage("Loading Location...");
     }
 
     @Override
-    protected String doInBackground(String... params) {
-        String userName = params[0];
-        SoapObject request = new SoapObject(NAMESPACE,METHOD_GETUSER);
-        request.addProperty("name",userName);
+    protected HashMap<String,String> doInBackground(ArrayList<String>... params) {
+        ArrayList<String> userNames  = params[0];
+        HashMap<String,String> hashMap = new HashMap<>();
+
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        envelope.dotNet = true;
-        envelope.setOutputSoapObject(request);
-
         HttpTransportSE httpTransportSE = new HttpTransportSE(URL);
-        try {
-            httpTransportSE.call(SOAP_ACTION,envelope);
-            SoapObject object = (SoapObject) envelope.getResponse();
 
-            String UserlastLocation = "";
-            if(object!=null)
-            {
-                SoapPrimitive lastLocation = (SoapPrimitive) object.getPropertySafely("UserLastLocation",null);
+        for(String userName : userNames)
+        {
+            SoapObject request = new SoapObject(NAMESPACE,METHOD_GETUSER);
+            request.addProperty("name",userName);
+
+            envelope.dotNet = true;
+            envelope.setOutputSoapObject(request);
+            try {
+                httpTransportSE.call(SOAP_ACTION,envelope);
+                SoapObject object = (SoapObject) envelope.getResponse();
+                SoapPrimitive lastLocation = (SoapPrimitive) object.getPropertySafely("UserLastLocation", null);
                 if(lastLocation!=null)
-                    UserlastLocation = lastLocation.toString();
-            }
+                {
+                    hashMap.put(userName,lastLocation.toString());
+                }
 
-            return UserlastLocation;
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
+            }
         }
 
-
-        return null;
+        return hashMap;
     }
 
     @Override
-    protected void onPostExecute(String string) {
-        super.onPostExecute(string);
+    protected void onPostExecute(HashMap<String,String> hashMap) {
+        super.onPostExecute(hashMap);
+        delegate.ProcessHashMap(hashMap);
         if(progressDialog.isShowing())
             progressDialog.dismiss();
-        delegate.processResponse(string);
+
     }
 }

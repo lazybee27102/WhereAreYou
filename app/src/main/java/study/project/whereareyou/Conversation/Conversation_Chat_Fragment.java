@@ -1,6 +1,7 @@
 package study.project.whereareyou.Conversation;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import study.project.whereareyou.R;
  */
 public class Conversation_Chat_Fragment extends android.support.v4.app.Fragment {
 
+    ConversationMain main;
 
     public Conversation_Chat_Fragment() {
         // Required empty public constructor
@@ -28,4 +30,21 @@ public class Conversation_Chat_Fragment extends android.support.v4.app.Fragment 
     }
 
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.main = (ConversationMain)context;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser)
+        {
+            if(main.getUpdate()!=null && main.getUpdate().isCancelled()==true)
+            {
+                main.startAsyntask();
+            }
+        }
+    }
 }

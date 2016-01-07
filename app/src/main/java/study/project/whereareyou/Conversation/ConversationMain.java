@@ -2,10 +2,13 @@ package study.project.whereareyou.Conversation;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -28,8 +31,12 @@ public class ConversationMain extends AppCompatActivity {
     Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager viewPager;
-
+    private ArrayList<String> userNames;
     UpdateLocationAsyncTask update;
+
+    public ArrayList<String> getUserNames() {
+        return userNames;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +56,15 @@ public class ConversationMain extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         setTabIcon(tabLayout);
 
-         update= (UpdateLocationAsyncTask) new UpdateLocationAsyncTask(ConversationMain.this).execute(new String[]{SharedPreference.ReadFromSharedPreference(getApplicationContext(), "USER", "")});
+        //fake User
+        userNames = new ArrayList<>();
+        userNames.add("lazybee272");
+        userNames.add("lazybee273");
+        //
+
+        update=new UpdateLocationAsyncTask(ConversationMain.this);
+        startAsyntask();
+
 
 
     }
@@ -74,6 +89,9 @@ public class ConversationMain extends AppCompatActivity {
         tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_map_white_24dp, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabTwo);
     }
+
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -119,6 +137,16 @@ public class ConversationMain extends AppCompatActivity {
 
     }
 
+    public void startAsyntask()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            update.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,new String[]{SharedPreference.ReadFromSharedPreference(getApplicationContext(), "USER", "")});
+        }else
+        {
+            update.execute(new String[]{SharedPreference.ReadFromSharedPreference(getApplicationContext(), "USER", "")});
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -127,4 +155,7 @@ public class ConversationMain extends AppCompatActivity {
     }
 
 
+    public UpdateLocationAsyncTask getUpdate() {
+        return update;
+    }
 }
