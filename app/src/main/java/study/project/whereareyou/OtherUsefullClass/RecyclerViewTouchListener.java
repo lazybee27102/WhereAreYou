@@ -24,6 +24,8 @@ public class RecyclerViewTouchListener implements RecyclerView.OnItemTouchListen
                 return true;
             }
 
+
+
         });
     }
 

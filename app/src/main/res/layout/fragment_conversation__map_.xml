@@ -2,11 +2,22 @@
     android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="10">
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_weight="9" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="REFRESH LOCATION"
+        android:id="@+id/button_map_refresh"
+        android:background="#00897b"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        android:layout_weight="1" />
 
 </LinearLayout>

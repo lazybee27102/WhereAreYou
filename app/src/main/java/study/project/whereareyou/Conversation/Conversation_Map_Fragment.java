@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -48,6 +49,8 @@ public class Conversation_Map_Fragment extends android.support.v4.app.Fragment {
     MapView mMapView;
     private GoogleMap googleMap;
     private ConversationMain main;
+    private Button button;
+
     public Conversation_Map_Fragment() {
     }
 
@@ -56,6 +59,32 @@ public class Conversation_Map_Fragment extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_conversation__map_, container, false);
+        button = (Button) v.findViewById(R.id.button_map_refresh);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    new GetUserLocationByName(getContext(), new GetUserLocationByName.getResponse() {
+                        @Override
+                        public void ProcessHashMap(HashMap<String, String> hashMap) {
+                            if(hashMap.size()!=0)
+                                AddMakerToGoogleMap(googleMap,hashMap);
+                        }
+                    }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,main.getUserNames());
+                } else {
+                    main.getUpdate().cancel(true);
+                    new GetUserLocationByName(getContext(), new GetUserLocationByName.getResponse() {
+                        @Override
+                        public void ProcessHashMap(HashMap<String, String> hashMap) {
+                            if(hashMap.size()!=0)
+                                AddMakerToGoogleMap(googleMap,hashMap);
+                        }
+                    }).execute(main.getUserNames());
+                }
+            }
+        });
+
+
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
         mMapView.onResume();// needed to get the map to display immediately*/
@@ -125,7 +154,7 @@ public class Conversation_Map_Fragment extends android.support.v4.app.Fragment {
         for (HashMap.Entry<String, String> entry : hashMap.entrySet())
         {
             String UserName = entry.getKey();
-            String[] Location = entry.getValue().split("-");
+            String[] Location = entry.getValue().split("/");
             Double latitude = Double.parseDouble(Location[0]);
             Double longtitude = Double.parseDouble(Location[1]);
 

@@ -195,10 +195,7 @@ public class NavigationDrawerFragment extends android.support.v4.app.Fragment {
     }
 
 
-    public static interface ClickListener
-    {
 
-    }
 
     @Override
     public void onResume() {

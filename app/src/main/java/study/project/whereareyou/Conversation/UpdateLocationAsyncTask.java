@@ -46,7 +46,7 @@ public class UpdateLocationAsyncTask extends AsyncTask<String, Void, Void> {
                 LatLng location = study.project.whereareyou.Location.getMyLocation(context);
                 SoapObject request = new SoapObject(NAMESPACE,METHOD);
                 request.addProperty("name",userName);
-                request.addProperty("lastLocation",location.latitude + "-"+location.longitude);
+                request.addProperty("lastLocation",location.latitude + "/"+location.longitude);
                 SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
                 envelope.dotNet = true;
                 envelope.setOutputSoapObject(request);
