@@ -48,16 +48,19 @@ public class GetUserLocationByName extends AsyncTask<ArrayList<String>,Void,Hash
         ArrayList<String> userNames  = params[0];
         HashMap<String,String> hashMap = new HashMap<>();
 
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        HttpTransportSE httpTransportSE = new HttpTransportSE(URL);
+
+
 
         for(String userName : userNames)
         {
             SoapObject request = new SoapObject(NAMESPACE,METHOD_GETUSER);
             request.addProperty("name",userName);
 
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
             envelope.setOutputSoapObject(request);
+
+            HttpTransportSE httpTransportSE = new HttpTransportSE(URL);
             try {
                 httpTransportSE.call(SOAP_ACTION,envelope);
                 SoapObject object = (SoapObject) envelope.getResponse();

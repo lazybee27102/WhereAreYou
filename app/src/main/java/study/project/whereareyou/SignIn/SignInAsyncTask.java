@@ -60,13 +60,18 @@ class SignInAsyncTask extends AsyncTask<String,Void,Boolean> {
         try {
             httpTransportSE.call(SOAP_ACTION, envelope);
             SoapObject object = (SoapObject) envelope.getResponse();
+            if(object!=null)
+            {
+                String passwordfromSoapObject = object.getPropertyAsString("UserPassWord");
+                if(pass.equals(passwordfromSoapObject))
+                    isCorrect= true;
+                else
+                    isCorrect = false;
+            }else
+                return false;
 
-            String passwordfromSoapObject = object.getPropertyAsString("UserPassWord");
 
-            if(pass.equals(passwordfromSoapObject))
-                isCorrect= true;
-            else
-                isCorrect = false;
+
 
         } catch (IOException e) {
             e.printStackTrace();
