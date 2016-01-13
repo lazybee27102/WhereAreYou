@@ -64,12 +64,14 @@ public class GetUserLocationByName extends AsyncTask<ArrayList<String>,Void,Hash
             try {
                 httpTransportSE.call(SOAP_ACTION,envelope);
                 SoapObject object = (SoapObject) envelope.getResponse();
-                SoapPrimitive lastLocation = (SoapPrimitive) object.getPropertySafely("UserLastLocation", null);
-                if(lastLocation!=null)
+                if(object!=null)
                 {
-                    hashMap.put(userName,lastLocation.toString());
+                    SoapPrimitive lastLocation = (SoapPrimitive) object.getPropertySafely("UserLastLocation", null);
+                    if(lastLocation!=null)
+                    {
+                        hashMap.put(userName,lastLocation.toString());
+                    }
                 }
-
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (XmlPullParserException e) {

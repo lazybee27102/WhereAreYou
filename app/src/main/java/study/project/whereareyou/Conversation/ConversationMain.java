@@ -95,7 +95,9 @@ public class ConversationMain extends AppCompatActivity implements GoogleApiClie
         userNames = new ArrayList<>();
         userNames.add("lazybee272");
         userNames.add("lazybee273");
+        userNames.add("dinhphuc2");
         //
+
 
         update = new UpdateLocationAsyncTask(ConversationMain.this);
 

@@ -27,17 +27,21 @@ public class MySqlOpenHelper {
     //////USERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
     public void insertUser(User user)
     {
-        SQLiteDatabase database = helper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(SqlHelper.key_user_Id,user.getId());
-        values.put(SqlHelper.key_user_Email,user.getEmail());
-        values.put(SqlHelper.key_user_Name,user.getUserName());
-        values.put(SqlHelper.key_user_FirstName,user.getFirstName());
-        values.put(SqlHelper.key_user_LastName,user.getLastName());
-        values.put(SqlHelper.key_user_BirthDate,user.getBirthDate());
-        values.put(SqlHelper.key_user_LastLocation,user.getLastLocation());
-        database.insert(SqlHelper.table_user,null,values);
-        database.close();
+        if(getUserByName(user.getUserName())==null)
+        {
+            SQLiteDatabase database = helper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(SqlHelper.key_user_Id,user.getId());
+            values.put(SqlHelper.key_user_Email,user.getEmail());
+            values.put(SqlHelper.key_user_Name,user.getUserName());
+            values.put(SqlHelper.key_user_FirstName,user.getFirstName());
+            values.put(SqlHelper.key_user_LastName,user.getLastName());
+            values.put(SqlHelper.key_user_BirthDate,user.getBirthDate());
+            values.put(SqlHelper.key_user_LastLocation,user.getLastLocation());
+            database.insert(SqlHelper.table_user,null,values);
+            database.close();
+        }else return;
+
     }
 
     public User getUserByName(String name)

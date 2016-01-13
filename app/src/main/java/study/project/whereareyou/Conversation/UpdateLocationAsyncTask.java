@@ -42,10 +42,9 @@ public class UpdateLocationAsyncTask extends AsyncTask<String, Void, Void> {
         userName = params[0];
         for (int i = 0; i >= 0; i++) {
             if (!this.isCancelled()) {
-                Log.d("HELLOO","LOOEELL");
                 Location location = context.getLocation();
-                if(location==null)
-                    break;
+                if(location==null || location.getLongitude()==0)
+                    return null;
                 else
                 {
                     SoapObject request = new SoapObject(NAMESPACE,METHOD);

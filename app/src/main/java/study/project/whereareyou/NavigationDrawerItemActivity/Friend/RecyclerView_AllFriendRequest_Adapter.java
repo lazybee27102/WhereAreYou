@@ -2,7 +2,6 @@ package study.project.whereareyou.NavigationDrawerItemActivity.Friend;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import study.project.whereareyou.OOP.User;
 import study.project.whereareyou.OtherUsefullClass.Message;
 import study.project.whereareyou.OtherUsefullClass.SharedPreference;
 import study.project.whereareyou.R;
@@ -59,7 +57,7 @@ public class RecyclerView_AllFriendRequest_Adapter extends RecyclerView.Adapter<
             super(itemView);
             button_add = (ImageButton) itemView.findViewById(R.id.imageButton_friendrequest_add);
             button_clear = (ImageButton) itemView.findViewById(R.id.imageButton_friendrequest_clear);
-            textView_name = (TextView) itemView.findViewById(R.id.textView_friendrequest_name);
+            textView_name = (TextView) itemView.findViewById(R.id.textView_friendchanel_name);
             layout = (LinearLayout) itemView.findViewById(R.id.linearLayout_friendrq_layout);
 
             button_add.setOnClickListener(this);

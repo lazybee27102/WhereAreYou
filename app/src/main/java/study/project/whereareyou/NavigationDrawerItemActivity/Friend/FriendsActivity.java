@@ -1,5 +1,6 @@
 package study.project.whereareyou.NavigationDrawerItemActivity.Friend;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
@@ -30,9 +31,10 @@ public class FriendsActivity extends AppCompatActivity {
     Toolbar toolbar;
     RecyclerView recyclerView;
     MySqlOpenHelper helper;
-
+ArrayList<String> arrayList_Friends = new ArrayList<String>();
     Button button_search_friend,button_seeFriendRequest;
     EditText editText_friendName;
+    RecycleView_Friend_Adapter adapter;
 
     User CurrentUser = new User();
 
@@ -59,11 +61,13 @@ public class FriendsActivity extends AppCompatActivity {
             public void ProcessResponse(ArrayList<String> arr) {
                 if(arr.size()!=0)
                 {
-                    RecycleView_Friend_Adapter adapter = new RecycleView_Friend_Adapter(FriendsActivity.this,arr);
+
+                    arrayList_Friends = arr;
+                    adapter = new RecycleView_Friend_Adapter(FriendsActivity.this,arr);
                     recyclerView.setAdapter(adapter);
                 }
             }
-        }).execute(SharedPreference.ReadFromSharedPreference(getApplicationContext(),"USER",""));
+        }).execute(SharedPreference.ReadFromSharedPreference(getApplicationContext(), "USER", ""));
 
 
         setWidget();
@@ -79,7 +83,10 @@ public class FriendsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(editText_friendName.getText().length()!=0)
                 {
-                    new GetUserByNameAsyncTask(FriendsActivity.this, "Searching friend...", new GetUserByNameAsyncTask.GetUserByNameAsyncTaskResponse() {
+                    final ProgressDialog progressDialog = new ProgressDialog(FriendsActivity.this);
+                    progressDialog.setMessage("Searching friend...");
+                    progressDialog.show();
+                    new GetUserByNameAsyncTask(FriendsActivity.this, new GetUserByNameAsyncTask.GetUserByNameAsyncTaskResponse() {
                         @Override
                         public void processResponse(User user) {
                             if(user!=null)
@@ -89,6 +96,9 @@ public class FriendsActivity extends AppCompatActivity {
                                 textView_friendName.setText(user.getUserName());
                             }else
                                 Message.printMessage(FriendsActivity.this,"Can't find that UserName");
+
+                            if(progressDialog.isShowing())
+                                progressDialog.dismiss();
                         }
                     }).execute(editText_friendName.getText().toString().trim());
                 }
@@ -106,33 +116,36 @@ public class FriendsActivity extends AppCompatActivity {
         imageButton_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(FriendsActivity.this)
-                        .setTitle("Add friend")
-                        .setMessage("Do you want add this friend?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                if(!SharedPreference.ReadFromSharedPreference(getApplicationContext(),"USER","").equals(editText_friendName.getText().toString().trim()))
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(FriendsActivity.this)
+                            .setTitle("Add friend")
+                            .setMessage("Do you want add this friend?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                                new AddFriendRequestAsyncTask(FriendsActivity.this, new AddFriendRequestAsyncTask.getResponse() {
-                                    @Override
-                                    public void getResponse(Boolean a) {
-                                        if (a) {
-                                            Message.printMessage(FriendsActivity.this, "Sending Friend Request...");
-                                            friendLayout.setVisibility(View.GONE);
-                                        } else
-                                            Message.printMessage(FriendsActivity.this, "Add Friend Failed");
-                                    }
-                                }).execute(new String[]{SharedPreference.ReadFromSharedPreference(getApplicationContext(), "USER", "").toString(), CurrentUser.getUserName()});
+                                    new AddFriendRequestAsyncTask(FriendsActivity.this, new AddFriendRequestAsyncTask.getResponse() {
+                                        @Override
+                                        public void getResponse(Boolean a) {
+                                            if (a) {
+                                                Message.printMessage(FriendsActivity.this, "Sending Friend Request...");
+                                                friendLayout.setVisibility(View.GONE);
+                                            } else
+                                                Message.printMessage(FriendsActivity.this, "Add Friend Failed");
+                                        }
+                                    }).execute(new String[]{SharedPreference.ReadFromSharedPreference(getApplicationContext(), "USER", "").toString(), CurrentUser.getUserName()});
 
 
-                            }
-                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                builder.show();
+                                }
+                            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    builder.show();
+                }
             }
         });
 
@@ -158,13 +171,15 @@ public class FriendsActivity extends AppCompatActivity {
 
 
         friendLayout = (LinearLayout) findViewById(R.id.linearLayout_friend_layout);
-        textView_friendName = (TextView) findViewById(R.id.textView_friendrequest_name);
+        textView_friendName = (TextView) findViewById(R.id.textView_friendchanel_name);
         imageButton_add = (ImageButton) findViewById(R.id.imageButton_friend_add);
         imageButton_clear = (ImageButton) findViewById(R.id.imageButton_friendrequest_clear);
 
 
 
     }
+
+
 
 
     @Override
@@ -179,7 +194,24 @@ public class FriendsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(adapter!=null)
+        {
+            new GetAllFriendAsyncTask(this, new GetAllFriendAsyncTask.getResponse() {
+                @Override
+                public void ProcessResponse(ArrayList<String> arr) {
+                    if(arr.size()!=0)
+                    {
 
+                        arrayList_Friends = arr;
+                        adapter = new RecycleView_Friend_Adapter(FriendsActivity.this,arr);
+                        recyclerView.setAdapter(adapter);
+                    }
+                }
+            }).execute(SharedPreference.ReadFromSharedPreference(getApplicationContext(), "USER", ""));
+        }
 
-
+    }
 }

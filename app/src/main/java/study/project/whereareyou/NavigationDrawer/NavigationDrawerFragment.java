@@ -74,17 +74,6 @@ public class NavigationDrawerFragment extends android.support.v4.app.Fragment {
         textView_navigationdrawer_name = (TextView) view.findViewById(R.id.textView_navigationdrawer_name);
         getTextView_navigationdrawer_email = (TextView) view.findViewById(R.id.textView_navigationdrawer_gmail);
 
-
-        //Set top of navigation drawew
-//        Log.d("USERRRRRRRRRRRRRRR", name);
-
-        //textView_navigationdrawer_name.setText(currentUser.getName());
-        //getTextView_navigationdrawer_email.setText(currentUser.getEmail());
-
-
-
-
-
         // Inflate the layout for this fragment
         recyclerView_navi = (android.support.v7.widget.RecyclerView)view.findViewById(R.id.recyclerview_item_navigation);
         adapter = new NavigationRecycleViewAdapter(getActivity(),getData());

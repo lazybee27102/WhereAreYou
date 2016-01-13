@@ -21,24 +21,15 @@ import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import study.project.whereareyou.NavigationDrawerItemActivity.Profile.GetUserByNameAsyncTask;
-import study.project.whereareyou.OOP.User;
-import study.project.whereareyou.OtherUsefullClass.Message;
 import study.project.whereareyou.OtherUsefullClass.SharedPreference;
 import study.project.whereareyou.R;
 
@@ -162,14 +153,16 @@ public class Conversation_Map_Fragment extends android.support.v4.app.Fragment {
             MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(UserName);
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
             markerOptions.title(UserName);
-            Marker CurrentMarker = map.addMarker(markerOptions);
-            CurrentMarker.showInfoWindow();
+            map.addMarker(markerOptions);
+
+
             if(UserName.equals(SharedPreference.ReadFromSharedPreference(getContext(),"USER","")))
             {
                 CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(latLng).zoom(12).build();
+                        .target(latLng).zoom(14).build();
                 map.animateCamera(CameraUpdateFactory
                         .newCameraPosition(cameraPosition));
+
             }
 
         }

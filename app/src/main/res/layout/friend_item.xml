@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Name of Friend"
-                android:id="@+id/textView_friendrequest_name"
+                android:id="@+id/textView_friendchanel_name"
                 android:paddingTop="3dp"
                 android:singleLine="true"
                 android:layout_centerVertical="true"
