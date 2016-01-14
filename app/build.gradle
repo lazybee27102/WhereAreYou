@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
@@ -23,14 +24,18 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.0'
-    compile 'com.google.android.gms:play-services:8.4.0'
-    compile 'com.android.support:cardview-v7:23.1.0'
-    compile 'com.android.support:recyclerview-v7:23.1.0'
-    compile 'com.melnykov:floatingactionbutton:1.3.0'
-    compile 'io.github.enzokie:typerlib:1.0.0'
-    compile 'com.android.support:design:23.1.0'
     compile files('ksoap2-android-assembly-2.6.0-jar-with-dependencies.jar')
     compile files('C:/Users/Administrator/Desktop/Nhung/WhereAreYou/.idea/libraries/joda-time-2.2.jar')
     compile files('joda-time-2.2.jar')
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.google.android.gms:play-services:8.4.0'
+    compile 'com.android.support:cardview-v7:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.melnykov:floatingactionbutton:1.3.0'
+    compile 'io.github.enzokie:typerlib:1.0.0'
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.google.android.gms:play-services-ads:8.4.0'
+    compile 'com.google.android.gms:play-services-identity:8.4.0'
+    compile 'com.google.android.gms:play-services-gcm:8.4.0'
 }
+apply plugin: 'com.google.gms.google-services'
