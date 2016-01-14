@@ -76,20 +76,20 @@ public class Conversation_Chat_Fragment extends android.support.v4.app.Fragment 
         // Inflate the layout for this fragment
 
         //initialize user name and chanel
+        View v = inflater.inflate(R.layout.content_chat, container, false);
 
-
-        this.mListView = (ListView) getActivity().findViewById(R.id.msgList);
+        this.mListView = (ListView) v.findViewById(R.id.msgList);
         this.mMessageAdapter = new MessageAdapter(getContext(), new ArrayList<ChatMessage>());
         this.mMessageAdapter.userPresence(this.username, "join");
         autoSroll();
         this.mListView.setAdapter(mMessageAdapter);
         setupListView();
 
-        mMessageET = (EditText) getActivity().findViewById(R.id.etMessage);
+        mMessageET = (EditText) v.findViewById(R.id.etMessage);
         initPubnub();
 
 
-        return inflater.inflate(R.layout.content_chat, container, false);
+        return v;
     }
 
 
@@ -324,7 +324,7 @@ public class Conversation_Chat_Fragment extends android.support.v4.app.Fragment 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            mHereNow.setTitle(String.valueOf(occ));
+                            //mHereNow.setTitle(String.valueOf(occ));
                             mMessageAdapter.setOnlineNow(usersOnline);
                             if (displayUsers)
                                 alertHereNow(usersOnline);
