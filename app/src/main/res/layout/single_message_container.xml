@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:id="@+id/msgLayout"
+    android:paddingTop="5dp" android:paddingBottom="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvUser"
+            android:text="DinhPhuc"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="10dp"/>
+        <View
+            android:id="@+id/userPresence"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/tvUser"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvUser"
+            android:background="@drawable/bubble_incoming"
+            android:paddingTop="10dp"
+            android:id="@+id/msgBackground">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/msgContent"
+                android:textSize="20dp"
+                android:text="Hello! This is a sample"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/msgTime"
+                android:layout_below="@+id/msgContent"
+                android:paddingLeft="5dp"
+                android:textColor="@android:color/darker_gray"
+                android:text="0:00" />
+        </RelativeLayout>
+
+</RelativeLayout>

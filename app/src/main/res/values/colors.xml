@@ -10,4 +10,11 @@
     <color name="colorAccent_blue">#FFC107</color>
     <color name="colorPrimaryLight_blue">#B3E5FC</color>
     <color name="primary_text_material_light">#000000</color>
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorChatBackground">#EEEEEE</color>
+    <color name="colorTextWhite">#FFFFFF</color>
+    <color name="colorTextBlack">#000000</color>
 </resources>
