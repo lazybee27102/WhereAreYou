@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         User user =helper.getUserByName(SharedPreference.ReadFromSharedPreference(getApplicationContext(),"USER",""));
         if(user==null)
         {
-           LoadCurrentUser();
+            LoadCurrentUser();
         }
         else
             navigationDrawerFragment.setUp(drawerLayout, toolbar, user);
@@ -117,16 +117,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void LoadCurrentUser() {
-            new GetUserByNameAsyncTask(this, new GetUserByNameAsyncTask.GetUserByNameAsyncTaskResponse() {
-                @Override
-                public void processResponse(User user) {
-                    if(user!=null)
-                    {
-                        helper.insertUser(user);
-                        navigationDrawerFragment.setUp(drawerLayout, toolbar, user);
-                    }
+        new GetUserByNameAsyncTask(this, new GetUserByNameAsyncTask.GetUserByNameAsyncTaskResponse() {
+            @Override
+            public void processResponse(User user) {
+                if(user!=null)
+                {
+                    helper.insertUser(user);
+                    navigationDrawerFragment.setUp(drawerLayout, toolbar, user);
                 }
-            }).execute(SharedPreference.ReadFromSharedPreference(getApplicationContext(),"USER",""));
+            }
+        }).execute(SharedPreference.ReadFromSharedPreference(getApplicationContext(),"USER",""));
 
     }
 

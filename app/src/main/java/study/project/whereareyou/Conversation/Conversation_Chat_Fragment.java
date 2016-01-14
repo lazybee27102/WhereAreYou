@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -57,8 +58,8 @@ public class Conversation_Chat_Fragment extends android.support.v4.app.Fragment 
     private MenuItem mHereNow;
     private SharedPreferences mSharedPrefs;
 
-    private String username = "tdp";
-    private String channel = "test";
+    private String username ;
+    private String channel ;
 
     private GoogleCloudMessaging gcm;
     private String gcmRegId;
@@ -76,6 +77,10 @@ public class Conversation_Chat_Fragment extends android.support.v4.app.Fragment 
         // Inflate the layout for this fragment
 
         //initialize user name and chanel
+        this.username=main.getUserName();
+        this.channel=main.getChanelName();
+
+
         View v = inflater.inflate(R.layout.content_chat, container, false);
 
         this.mListView = (ListView) v.findViewById(R.id.msgList);
@@ -84,6 +89,14 @@ public class Conversation_Chat_Fragment extends android.support.v4.app.Fragment 
         autoSroll();
         this.mListView.setAdapter(mMessageAdapter);
         setupListView();
+
+        Button button = (Button)v.findViewById(R.id.btnSend);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendMessage(v);
+            }
+        });
 
         mMessageET = (EditText) v.findViewById(R.id.etMessage);
         initPubnub();
@@ -213,7 +226,7 @@ public class Conversation_Chat_Fragment extends android.support.v4.app.Fragment 
                         String msg = jsonMsg.getString(Constants.JSON_MSG);
                         long time = jsonMsg.getLong(Constants.JSON_TIME);
                         ChatMessage chatMsg = new ChatMessage(name, msg, time);
-                        if(name.equals(mPubNub.getUUID()))
+                        if (name.equals(mPubNub.getUUID()))
                             chatMsg.setOutGoing(true);
                         chatMsgs.add(chatMsg);
                     }
@@ -400,5 +413,35 @@ public class Conversation_Chat_Fragment extends android.support.v4.app.Fragment 
             this.mPubNub.setState(this.channel, this.mPubNub.getUUID(), state, callback);
         }
         catch (JSONException e) { e.printStackTrace(); }
+    }
+
+    public void sendMessage(View view){
+        String message = mMessageET.getText().toString();
+        if(message.equals("")) return;
+        mMessageET.setText("");
+        ChatMessage chatMessage = new ChatMessage(username, message, System.currentTimeMillis());
+        chatMessage.setOutGoing(true);
+        try{
+            JSONObject json = new JSONObject();
+            json.put("chatUser", chatMessage.getUsername());
+            json.put("chatMsg", chatMessage.getMessage());
+            json.put("chatTime", chatMessage.getTime());
+            publish("groupMessage", json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mMessageAdapter.addMessage(chatMessage);
+    }
+
+    //publish object lên pubnub server
+    public void publish(String type, JSONObject data){
+        JSONObject json = new JSONObject();
+        try{
+            json.put("type",type);
+            json.put("data", data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        this.mPubNub.publish(this.channel, json, new BasicCallback());
     }
 }

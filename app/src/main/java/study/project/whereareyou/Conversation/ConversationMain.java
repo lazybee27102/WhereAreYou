@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -42,8 +43,18 @@ public class ConversationMain extends AppCompatActivity implements GoogleApiClie
     Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager viewPager;
+    String userName;
+    String chanelName;
     private ArrayList<String> userNames;
     UpdateLocationAsyncTask update;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getChanelName() {
+        return chanelName;
+    }
 
     //
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
@@ -57,6 +68,7 @@ public class ConversationMain extends AppCompatActivity implements GoogleApiClie
         return userNames;
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +78,10 @@ public class ConversationMain extends AppCompatActivity implements GoogleApiClie
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Bundle bundle = getIntent().getBundleExtra("DATA");
+        userName = bundle.getString("USER_NAME");
+        chanelName = bundle.getString("CHANEL_NAME");
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setViewPager(viewPager);
@@ -91,12 +107,9 @@ public class ConversationMain extends AppCompatActivity implements GoogleApiClie
                 .setFastestInterval(1 * 1000)// 1 second, in milliseconds
                 .setSmallestDisplacement(10);
 
-        //fake User
-        userNames = new ArrayList<>();
-        userNames.add("lazybee272");
-        userNames.add("lazybee273");
-        userNames.add("dinhphuc2");
-        //
+        userNames = bundle.getStringArrayList("ALL_USERS");
+
+
 
 
         update = new UpdateLocationAsyncTask(ConversationMain.this);
@@ -266,12 +279,14 @@ public class ConversationMain extends AppCompatActivity implements GoogleApiClie
 
     public void startAsyntask()
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            update.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,new String[]{SharedPreference.ReadFromSharedPreference(getApplicationContext(), "USER", "")});
-        }else
-        {
-            update.execute(new String[]{SharedPreference.ReadFromSharedPreference(getApplicationContext(), "USER", "")});
+        if(update.getStatus()!= AsyncTask.Status.RUNNING){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+                update.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,new String[]{SharedPreference.ReadFromSharedPreference(getApplicationContext(), "USER", "")});
+            else
+                update.execute(new String[]{SharedPreference.ReadFromSharedPreference(getApplicationContext(), "USER", "")});
         }
+
+
     }
 
     @Override
