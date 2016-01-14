@@ -13,7 +13,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 
 import com.melnykov.fab.FloatingActionButton;
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     MySqlOpenHelper helper = new MySqlOpenHelper(this);
-
+    Button button_reload;
     DrawerLayout drawerLayout;
     NavigationDrawerFragment navigationDrawerFragment;
     android.support.v7.widget.Toolbar toolbar;
@@ -62,7 +65,13 @@ public class MainActivity extends AppCompatActivity {
         navigationDrawerFragment =(NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer_fragment);
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        button_reload = (Button) findViewById(R.id.button_reload);
+        button_reload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoadConversation();
+            }
+        });
 
 
         User user =helper.getUserByName(SharedPreference.ReadFromSharedPreference(getApplicationContext(),"USER",""));
@@ -208,8 +217,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
-
 
     @Override
     public void onBackPressed() {

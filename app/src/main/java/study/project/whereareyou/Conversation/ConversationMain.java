@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -45,6 +46,8 @@ public class ConversationMain extends AppCompatActivity implements GoogleApiClie
     ViewPager viewPager;
     String userName;
     String chanelName;
+
+    Button button_HereNow;
     private ArrayList<String> userNames;
     UpdateLocationAsyncTask update;
 
@@ -54,6 +57,14 @@ public class ConversationMain extends AppCompatActivity implements GoogleApiClie
 
     public String getChanelName() {
         return chanelName;
+    }
+
+    public Button getButton_HereNow() {
+        return button_HereNow;
+    }
+
+    public void setButton_HereNow(Button button_HereNow) {
+        this.button_HereNow = button_HereNow;
     }
 
     //
@@ -82,6 +93,10 @@ public class ConversationMain extends AppCompatActivity implements GoogleApiClie
         Bundle bundle = getIntent().getBundleExtra("DATA");
         userName = bundle.getString("USER_NAME");
         chanelName = bundle.getString("CHANEL_NAME");
+
+        getSupportActionBar().setTitle(chanelName);
+
+        button_HereNow = (Button) findViewById(R.id.button_HereNow);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setViewPager(viewPager);

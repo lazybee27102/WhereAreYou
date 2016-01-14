@@ -37,7 +37,7 @@ ArrayList<String> arrayList_Friends = new ArrayList<String>();
     RecycleView_Friend_Adapter adapter;
 
     User CurrentUser = new User();
-
+    Button button_refresh;
     //friend Show
     LinearLayout friendLayout;
     TextView textView_friendName;
@@ -81,7 +81,8 @@ ArrayList<String> arrayList_Friends = new ArrayList<String>();
         button_search_friend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(editText_friendName.getText().length()!=0)
+                String UserName = SharedPreference.ReadFromSharedPreference(FriendsActivity.this,"USER","");
+                if(editText_friendName.getText().length()!=0 && !editText_friendName.getText().toString().trim().equals(UserName))
                 {
                     final ProgressDialog progressDialog = new ProgressDialog(FriendsActivity.this);
                     progressDialog.setMessage("Searching friend...");
@@ -101,6 +102,9 @@ ArrayList<String> arrayList_Friends = new ArrayList<String>();
                                 progressDialog.dismiss();
                         }
                     }).execute(editText_friendName.getText().toString().trim());
+                }else
+                {
+                    Message.printMessage(FriendsActivity.this,"Please insert Name of Your Friend (Not your Name)");
                 }
             }
         });
@@ -155,6 +159,23 @@ ArrayList<String> arrayList_Friends = new ArrayList<String>();
                 friendLayout.setVisibility(View.GONE);
             }
         });
+
+        button_refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    new GetAllFriendAsyncTask(FriendsActivity.this, new GetAllFriendAsyncTask.getResponse() {
+                        @Override
+                        public void ProcessResponse(ArrayList<String> arr) {
+                            if(arr.size()!=0)
+                            {
+
+                                adapter = new RecycleView_Friend_Adapter(FriendsActivity.this,arr);
+                                recyclerView.setAdapter(adapter);
+                            }
+                        }
+                    }).execute(SharedPreference.ReadFromSharedPreference(getApplicationContext(), "USER", ""));
+            }
+        });
     }
 
     private void setWidget() {
@@ -175,7 +196,7 @@ ArrayList<String> arrayList_Friends = new ArrayList<String>();
         imageButton_add = (ImageButton) findViewById(R.id.imageButton_friend_add);
         imageButton_clear = (ImageButton) findViewById(R.id.imageButton_friendrequest_clear);
 
-
+        button_refresh = (Button) findViewById(R.id.button_refresh);
 
     }
 
@@ -212,6 +233,5 @@ ArrayList<String> arrayList_Friends = new ArrayList<String>();
                 }
             }).execute(SharedPreference.ReadFromSharedPreference(getApplicationContext(), "USER", ""));
         }
-
     }
 }

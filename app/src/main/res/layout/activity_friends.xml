@@ -5,124 +5,142 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
 
-    tools:context=".NavigationDrawerItemActivity.Profile.ProfileActivity"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:gravity="center_horizontal">
+    tools:context=".NavigationDrawerItemActivity.Profile.ProfileActivity">
 
-    <include
-        layout="@layout/toolbar"
-        android:id="@+id/toolbar"></include>
-
-    <LinearLayout
-        android:orientation="horizontal"
+    <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary_pink"
+        android:minHeight="?android:attr/actionBarSize"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ToolbarTheme">
+
+        <Button
+            android:id="@+id/button_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:background="@null"
+            android:text="REFRESH"
+            android:textColor="#FFF"
+            android:textSize="14sp" />
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:weightSum="5">
 
         <EditText
+            android:id="@+id/editText_friend_friendName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/editText_friend_friendName"
             android:layout_weight="4"
             android:hint="Your Friend UserName" />
 
         <Button
+            android:id="@+id/button_friend_SearchFriend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="FIND A FRIEND"
-            android:id="@+id/button_friend_SearchFriend"
-            android:background="#03A9F4"
-            android:textColor="#ffffff"
-            android:textSize="16sp"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="#03A9F4"
+            android:text="FIND A FRIEND"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout_friend_layout"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
         android:visibility="gone">
 
         <ImageView
+            android:id="@+id/imageView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:id="@+id/imageView"
             android:layout_weight="2"
             android:src="@mipmap/ic_launcher" />
 
         <RelativeLayout
-            android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="8">
+            android:layout_weight="8"
+            android:orientation="vertical">
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
                 android:id="@+id/imageButton_friendrequest_clear"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="true"
-                android:src="@mipmap/ic_clear_black_48dp"
-                 />
-
-            <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:src="@mipmap/ic_clear_black_48dp" />
+
+            <ImageButton
                 android:id="@+id/imageButton_friend_add"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/imageButton_friendrequest_clear"
                 android:layout_toStartOf="@+id/imageButton_friendrequest_clear"
                 android:src="@mipmap/ic_add_black_48dp" />
 
             <TextView
+                android:id="@+id/textView_friendchanel_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
-                android:id="@+id/textView_friendchanel_name"
-                android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:paddingLeft="10dp" />
+                android:layout_centerVertical="true"
+                android:paddingLeft="10dp"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
         </RelativeLayout>
 
     </LinearLayout>
 
     <Button
-        android:layout_marginTop="2dp"
+        android:id="@+id/button_friend_FriendRequest"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SEE ALL FRIEND REQUEST"
-        android:id="@+id/button_friend_FriendRequest"
-        android:background="#00897b"
-        android:textColor="#ffffff"
-        android:textSize="16sp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp" />
+        android:layout_marginTop="2dp"
+        android:background="#00897b"
+        android:text="SEE ALL FRIEND REQUEST"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
 
 
     <TextView
-        android:layout_marginTop="2dp"
+        android:id="@+id/textView9"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="All Your Friend"
-        android:id="@+id/textView9"
         android:layout_gravity="center"
+        android:layout_marginTop="2dp"
         android:gravity="center"
+        android:paddingBottom="5dp"
         android:paddingTop="5dp"
-        android:paddingBottom="5dp" />
+        android:text="All Your Friend"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView_friends"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/recyclerView_friends">
+        android:layout_height="match_parent">
 
     </android.support.v7.widget.RecyclerView>
 </LinearLayout>

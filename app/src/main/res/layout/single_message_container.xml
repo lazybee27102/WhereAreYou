@@ -10,7 +10,8 @@
             android:id="@+id/tvUser"
             android:text="DinhPhuc"
             android:layout_marginBottom="2dp"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            android:textSize="10sp" />
         <View
             android:id="@+id/userPresence"
             android:layout_width="10dp"
@@ -32,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/msgContent"
-                android:textSize="20dp"
+                android:textSize="17sp"
                 android:text="Hello! This is a sample"/>
 
             <TextView
@@ -42,7 +43,8 @@
                 android:layout_below="@+id/msgContent"
                 android:paddingLeft="5dp"
                 android:textColor="@android:color/darker_gray"
-                android:text="0:00" />
+                android:text="0:00"
+                android:textSize="12sp" />
         </RelativeLayout>
 
 </RelativeLayout>

@@ -117,6 +117,7 @@ public class Conversation_Map_Fragment extends android.support.v4.app.Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if(isVisibleToUser)
         {
+            main.getButton_HereNow().setEnabled(false);
             String UserName = SharedPreference.ReadFromSharedPreference(getContext(), "USER", "");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                 new GetUserLocationByName(getContext(), new GetUserLocationByName.getResponse() {

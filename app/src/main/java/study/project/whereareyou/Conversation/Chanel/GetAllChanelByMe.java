@@ -42,7 +42,7 @@ public class GetAllChanelByMe extends AsyncTask<String,Void,ArrayList<Conversati
         this.context = context;
         this.delegate = delegate;
         progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Getting All Conversation...");
+        progressDialog.setMessage("Getting All Conversations...");
         progressDialog.show();
 
 

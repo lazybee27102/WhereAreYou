@@ -81,6 +81,8 @@ public class Conversation_Chat_Fragment extends android.support.v4.app.Fragment 
         this.channel=main.getChanelName();
 
 
+
+
         View v = inflater.inflate(R.layout.content_chat, container, false);
 
         this.mListView = (ListView) v.findViewById(R.id.msgList);
@@ -117,6 +119,13 @@ public class Conversation_Chat_Fragment extends android.support.v4.app.Fragment 
         super.setUserVisibleHint(isVisibleToUser);
         if(isVisibleToUser)
         {
+            main.getButton_HereNow().setEnabled(true);
+            main.getButton_HereNow().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    hereNow(true);
+                }
+            });
             if(main.getUpdate()!=null && main.getUpdate().isCancelled()==true)
             {
                 main.startAsyntask();
@@ -260,7 +269,7 @@ public class Conversation_Chat_Fragment extends android.support.v4.app.Fragment 
             if (gcmRegId.isEmpty()) {
                 registerInBackground();
             } else {
-                Toast.makeText(getContext(), "Registration ID already exists: " + gcmRegId, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Welcome Back", Toast.LENGTH_SHORT).show();
             }
         } else {
             Log.e("GCM-register", "No valid Google Play Services APK found.");
@@ -337,7 +346,7 @@ public class Conversation_Chat_Fragment extends android.support.v4.app.Fragment 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            //mHereNow.setTitle(String.valueOf(occ));
+                            main.getButton_HereNow().setText(String.valueOf(occ));
                             mMessageAdapter.setOnlineNow(usersOnline);
                             if (displayUsers)
                                 alertHereNow(usersOnline);
