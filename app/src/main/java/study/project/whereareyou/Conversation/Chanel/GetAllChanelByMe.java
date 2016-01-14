@@ -84,7 +84,9 @@ public class GetAllChanelByMe extends AsyncTask<String,Void,ArrayList<Conversati
                     SoapObject request1 = new SoapObject(NAMESPACE,METHOD_GETALLUSERNAMEFROMCHANEL);
                     request1.addProperty("chanelName",info.getName());
                     envelope.setOutputSoapObject(request1);
-                    httpTransportSE.call(SOAP_ACTION1,envelope);
+
+                    HttpTransportSE httpTransportSE1 = new HttpTransportSE(URL);
+                    httpTransportSE1.call(SOAP_ACTION1,envelope);
                     SoapObject arrString = (SoapObject) envelope.getResponse();
                     if(arrString!=null)
                     {

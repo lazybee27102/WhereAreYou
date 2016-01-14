@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -17,11 +19,13 @@ import android.view.View;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import study.project.whereareyou.Conversation.Chanel.CreateChanel;
 import study.project.whereareyou.Conversation.Chanel.GetAllChanelByMe;
 import study.project.whereareyou.Conversation.ConversationInfo;
 import study.project.whereareyou.Conversation.ConversationMain;
+import study.project.whereareyou.Conversation.GetUserLocationByName;
 import study.project.whereareyou.Conversation.RecycleView_Conversation_Adapter;
 import study.project.whereareyou.NavigationDrawerItemActivity.Profile.GetUserByNameAsyncTask;
 import study.project.whereareyou.NavigationDrawer.NavigationDrawerFragment;
@@ -128,7 +132,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void LoadConversation()
     {
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            new GetAllChanelByMe(this, new GetAllChanelByMe.GetResponse() {
+                @Override
+                public void processResponse(ArrayList<ConversationInfo> user) {
+                    if(user!=null && user.size()!=0)
+                    {
+                        conversationInfos = user;
+                        RecycleView_Conversation_Adapter adapter = new RecycleView_Conversation_Adapter(MainActivity.this,user);
+                        recyclerView.setAdapter(adapter);
+                    }
+                }
+            }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,SharedPreference.ReadFromSharedPreference(getApplicationContext(), "USER", ""));
+        }else
+        {
             new GetAllChanelByMe(this, new GetAllChanelByMe.GetResponse() {
                 @Override
                 public void processResponse(ArrayList<ConversationInfo> user) {
@@ -140,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }).execute(SharedPreference.ReadFromSharedPreference(getApplicationContext(), "USER", ""));
+        }
     }
 
     private void LoadAllInformation()
