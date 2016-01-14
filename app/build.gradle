@@ -27,6 +27,7 @@ dependencies {
     compile files('ksoap2-android-assembly-2.6.0-jar-with-dependencies.jar')
     compile files('C:/Users/Administrator/Desktop/Nhung/WhereAreYou/.idea/libraries/joda-time-2.2.jar')
     compile files('joda-time-2.2.jar')
+/*<<<<<<< HEAD*/
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.android.support:cardview-v7:23.1.1'
@@ -37,5 +38,11 @@ dependencies {
     compile 'com.google.android.gms:play-services-ads:8.4.0'
     compile 'com.google.android.gms:play-services-identity:8.4.0'
     compile 'com.google.android.gms:play-services-gcm:8.4.0'
+    compile 'com.pubnub:pubnub-android:3.7.5'
 }
 apply plugin: 'com.google.gms.google-services'
+/*=======*/
+
+
+
+/*>>>>>>> bd16d9bd5d31434eb5540d5865ec93cecd92e87c*/
