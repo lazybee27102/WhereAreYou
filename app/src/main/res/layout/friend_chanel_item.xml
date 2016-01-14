@@ -6,7 +6,8 @@
     android:layout_height="80dp"
     android:layout_gravity="center_horizontal"
     android:visibility="visible"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="5dp">
 
     <ImageView
         android:layout_width="0dp"
@@ -21,26 +22,6 @@
         android:layout_height="match_parent"
         android:layout_weight="8">
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:id="@+id/imageButton_friendrequest_clear"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="true"
-            android:src="@mipmap/ic_clear_black_48dp"
-            />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:id="@+id/imageButton_friendrequest_add"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/imageButton_friendrequest_clear"
-            android:layout_toStartOf="@+id/imageButton_friendrequest_clear"
-            android:src="@mipmap/ic_add_black_48dp" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,6 +32,19 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:paddingLeft="10dp" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Invite"
+            android:id="@+id/checkBox_friendchanel_invite"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:checked="false"
+            android:layout_marginRight="15dp"
+            android:textSize="20dp" />
+
     </RelativeLayout>
 
 </LinearLayout>

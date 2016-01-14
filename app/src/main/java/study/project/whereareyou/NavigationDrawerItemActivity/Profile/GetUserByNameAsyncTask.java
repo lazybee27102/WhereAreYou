@@ -25,7 +25,6 @@ public class GetUserByNameAsyncTask extends AsyncTask<String,Void,User> {
     final String METHOD_GETUSER = "USER_GetUserByName";
     final String SOAP_ACTION = NAMESPACE+METHOD_GETUSER;
 
-    ProgressDialog progressDialog;
 
     public interface GetUserByNameAsyncTaskResponse
     {
@@ -35,13 +34,10 @@ public class GetUserByNameAsyncTask extends AsyncTask<String,Void,User> {
     GetUserByNameAsyncTaskResponse delegate;
     Context context;
 
-
-    public GetUserByNameAsyncTask(Context context,String textInProgressDialog,GetUserByNameAsyncTaskResponse delegate) {
+    public GetUserByNameAsyncTask(Context context,GetUserByNameAsyncTaskResponse delegate) {
         this.context = context;
         this.delegate = delegate;
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage(textInProgressDialog);
-        progressDialog.show();
+
 
     }
 
@@ -103,9 +99,8 @@ public class GetUserByNameAsyncTask extends AsyncTask<String,Void,User> {
     @Override
     protected void onPostExecute(User user) {
         super.onPostExecute(user);
-        if(progressDialog.isShowing())
-            progressDialog.dismiss();
         delegate.processResponse(user);
+
 
     }
 }

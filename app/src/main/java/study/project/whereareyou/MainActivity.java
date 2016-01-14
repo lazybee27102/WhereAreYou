@@ -2,9 +2,10 @@ package study.project.whereareyou;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -13,37 +14,40 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
 
 
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import study.project.whereareyou.Conversation.Chanel.CreateChanel;
+import study.project.whereareyou.Conversation.Chanel.GetAllChanelByMe;
 import study.project.whereareyou.Conversation.ConversationInfo;
 import study.project.whereareyou.Conversation.ConversationMain;
-import study.project.whereareyou.Conversation.CreateConversationActivity;
+import study.project.whereareyou.Conversation.GetUserLocationByName;
 import study.project.whereareyou.Conversation.RecycleView_Conversation_Adapter;
 import study.project.whereareyou.NavigationDrawerItemActivity.Profile.GetUserByNameAsyncTask;
 import study.project.whereareyou.NavigationDrawer.NavigationDrawerFragment;
-import study.project.whereareyou.NavigationDrawer.NavigationDrawerItem;
 import study.project.whereareyou.OOP.User;
 import study.project.whereareyou.OtherUsefullClass.ClickListener;
-import study.project.whereareyou.OtherUsefullClass.Message;
 import study.project.whereareyou.OtherUsefullClass.NoNetworkAvailableAcitivy;
 import study.project.whereareyou.OtherUsefullClass.RecyclerViewTouchListener;
 import study.project.whereareyou.OtherUsefullClass.SharedPreference;
 import study.project.whereareyou.SqlHelper.MySqlOpenHelper;
 
 public class MainActivity extends AppCompatActivity {
+
+
     MySqlOpenHelper helper = new MySqlOpenHelper(this);
 
     DrawerLayout drawerLayout;
     NavigationDrawerFragment navigationDrawerFragment;
     android.support.v7.widget.Toolbar toolbar;
     android.support.v7.widget.RecyclerView recyclerView;
-    private static final int ACTIVITY_SIGNIN_NETWORK = 1;
+    public static final int ACTIVITY_SIGNIN_NETWORK = 1;
 
+    private ArrayList<ConversationInfo> conversationInfos = new ArrayList<>();
 
 
     @Override
@@ -52,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         runUIforUserConnectedNetWork();
+
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationDrawerFragment =(NavigationDrawerFragment)getSupportFragmentManager().findFragmentById(R.id.navigation_drawer_fragment);
@@ -63,13 +68,10 @@ public class MainActivity extends AppCompatActivity {
         User user =helper.getUserByName(SharedPreference.ReadFromSharedPreference(getApplicationContext(),"USER",""));
         if(user==null)
         {
-            LoadCurrentUser();
+           LoadCurrentUser();
         }
         else
-        {
-
             navigationDrawerFragment.setUp(drawerLayout, toolbar, user);
-        }
 
         //ReycycleView of Chat Groups
         recyclerView = (android.support.v7.widget.RecyclerView) findViewById(R.id.recycleview_chatgroup_list);
@@ -80,63 +82,22 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        //fakeUsers
-        User user1 = new User("Nguyen Hoang Phat","27","Male","lazybee27102@gmail.com","hihi","25","dddd");
-        User user2 = new User("Nguyen Hoang Phat","27","Male","lazybee27102@gmail.com","hihi","25","dddd");
-        User user3 = new User("Nguyen Hoang Phat","27","Male","lazybee27102@gmail.com","hihi","25","dddd");
-        ArrayList<User> users = new ArrayList<>();
-        users.add(user1);
-        users.add(user2);
-        users.add(user3);
-
-        String s1 = "Hello";
-        String s2 = "I am fine";
-        String s3 = "How are you today?";
-        ArrayList<String> mess = new ArrayList<>();
-        mess.add(s1);
-        mess.add(s2);
-        mess.add(s3);
-        ConversationInfo ci = new ConversationInfo(users,user1,mess,"21/10/2015");
-        ConversationInfo ci1 = new ConversationInfo(users,user1,mess,"21/10/2015");
-        ConversationInfo ci2 = new ConversationInfo(users,user1,mess,"21/10/2015");
-        ConversationInfo ci3 = new ConversationInfo(users,user1,mess,"21/10/2015");
-        ConversationInfo ci4 = new ConversationInfo(users,user1,mess,"21/10/2015");
-        ConversationInfo ci5 = new ConversationInfo(users,user1,mess,"21/10/2015");
-        ConversationInfo ci6 = new ConversationInfo(users,user1,mess,"21/10/2015");
-        ConversationInfo ci7 = new ConversationInfo(users,user1,mess,"21/10/2015");
-        ConversationInfo ci8 = new ConversationInfo(users,user1,mess,"21/10/2015");
-        ConversationInfo ci9 = new ConversationInfo(users,user1,mess,"21/10/2015");
-        ConversationInfo ci10 = new ConversationInfo(users,user1,mess,"21/10/2015");
+        //LoadAllChanel
 
 
-        ArrayList<ConversationInfo> cis = new ArrayList<>();
-        cis.add(ci);
-        cis.add(ci1);
-        cis.add(ci2);
-        cis.add(ci3);
-        cis.add(ci4);
-        cis.add(ci5);
-        cis.add(ci6);
-        cis.add(ci7);
-        cis.add(ci8);
-        cis.add(ci9);
-        cis.add(ci10);
-        cis.add(ci10);
-        cis.add(ci10);
-        cis.add(ci10);
-        cis.add(ci10);
-
-
-
-        //end fake
-        RecycleView_Conversation_Adapter adapter = new RecycleView_Conversation_Adapter(this,cis);
-        recyclerView.setAdapter(adapter);
         recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(MainActivity.this, recyclerView, new ClickListener() {
             @Override
             public void onClick(RecyclerView.ViewHolder view, int position) {
                 if(!drawerLayout.isDrawerOpen(GravityCompat.START))
                 {
-                    startActivity(new Intent(MainActivity.this,ConversationMain.class));
+                    ConversationInfo info = conversationInfos.get(position);
+                    Bundle b = new Bundle();
+                    b.putString("CHANEL_NAME", info.getName());
+                    b.putString("USER_NAME", SharedPreference.ReadFromSharedPreference(getApplication(), "USER", ""));
+                    b.putStringArrayList("ALL_USERS", info.getAllGuessuser());
+                    Intent i = new Intent(MainActivity.this, ConversationMain.class);
+                    i.putExtra("DATA",b);
+                    startActivity(i);
                 }
             }
         }));
@@ -147,26 +108,63 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, CreateConversationActivity.class));
+
+                startActivity(new Intent(MainActivity.this, CreateChanel.class));
             }
         });
     }
 
+
+
     private void LoadCurrentUser() {
-        new GetUserByNameAsyncTask(this,"Getting your Information...", new GetUserByNameAsyncTask.GetUserByNameAsyncTaskResponse() {
-            @Override
-            public void processResponse(User user) {
-                if(user!=null)
-                {
-                    helper.insertUser(user);
-                    navigationDrawerFragment.setUp(drawerLayout, toolbar, user);
+            new GetUserByNameAsyncTask(this, new GetUserByNameAsyncTask.GetUserByNameAsyncTaskResponse() {
+                @Override
+                public void processResponse(User user) {
+                    if(user!=null)
+                    {
+                        helper.insertUser(user);
+                        navigationDrawerFragment.setUp(drawerLayout, toolbar, user);
+                    }
                 }
+            }).execute(SharedPreference.ReadFromSharedPreference(getApplicationContext(),"USER",""));
 
-
-            }
-        }).execute(SharedPreference.ReadFromSharedPreference(getApplicationContext(),"USER",""));
     }
 
+    private void LoadConversation()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            new GetAllChanelByMe(this, new GetAllChanelByMe.GetResponse() {
+                @Override
+                public void processResponse(ArrayList<ConversationInfo> user) {
+                    if(user!=null && user.size()!=0)
+                    {
+                        conversationInfos = user;
+                        RecycleView_Conversation_Adapter adapter = new RecycleView_Conversation_Adapter(MainActivity.this,user);
+                        recyclerView.setAdapter(adapter);
+                    }
+                }
+            }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,SharedPreference.ReadFromSharedPreference(getApplicationContext(), "USER", ""));
+        }else
+        {
+            new GetAllChanelByMe(this, new GetAllChanelByMe.GetResponse() {
+                @Override
+                public void processResponse(ArrayList<ConversationInfo> user) {
+                    if(user!=null && user.size()!=0)
+                    {
+                        conversationInfos = user;
+                        RecycleView_Conversation_Adapter adapter = new RecycleView_Conversation_Adapter(MainActivity.this,user);
+                        recyclerView.setAdapter(adapter);
+                    }
+                }
+            }).execute(SharedPreference.ReadFromSharedPreference(getApplicationContext(), "USER", ""));
+        }
+    }
+
+    private void LoadAllInformation()
+    {
+        LoadCurrentUser();
+        LoadConversation();
+    }
 
     public void runUIforUserConnectedNetWork()
     {
@@ -211,10 +209,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LoadConversation();
+    }
 }

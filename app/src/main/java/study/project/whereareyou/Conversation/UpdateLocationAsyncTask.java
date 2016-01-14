@@ -26,14 +26,14 @@ import java.io.IOException;
  * Created by Administrator on 05/01/2016.
  */
 public class UpdateLocationAsyncTask extends AsyncTask<String, Void, Void> {
-    private Context context;
+    private ConversationMain context;
 
     private final String URL = "http://whereareyou.somee.com/WebService.asmx";
     private final String METHOD = "USER_UpdateUserLocation";
     private final String NAMESPACE  = "http://tempuri.org/";
     private String userName;
 
-    public UpdateLocationAsyncTask(Context context) {
+    public UpdateLocationAsyncTask(ConversationMain context) {
         this.context = context;
     }
 
@@ -42,21 +42,25 @@ public class UpdateLocationAsyncTask extends AsyncTask<String, Void, Void> {
         userName = params[0];
         for (int i = 0; i >= 0; i++) {
             if (!this.isCancelled()) {
-                Log.d("HELLOO","LOOEELL");
-                LatLng location = study.project.whereareyou.Location.getMyLocation(context);
-                SoapObject request = new SoapObject(NAMESPACE,METHOD);
-                request.addProperty("name",userName);
-                request.addProperty("lastLocation",location.latitude + "/"+location.longitude);
-                SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
-                envelope.dotNet = true;
-                envelope.setOutputSoapObject(request);
-                HttpTransportSE httpTransportSE = new HttpTransportSE(URL);
-                try {
-                    httpTransportSE.call(NAMESPACE+METHOD,envelope);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (XmlPullParserException e) {
-                    e.printStackTrace();
+                Location location = context.getLocation();
+                if(location==null || location.getLongitude()==0)
+                    return null;
+                else
+                {
+                    SoapObject request = new SoapObject(NAMESPACE,METHOD);
+                    request.addProperty("name",userName);
+                    request.addProperty("lastLocation",location.getLatitude() + "/"+location.getLongitude());
+                    SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+                    envelope.dotNet = true;
+                    envelope.setOutputSoapObject(request);
+                    HttpTransportSE httpTransportSE = new HttpTransportSE(URL);
+                    try {
+                        httpTransportSE.call(NAMESPACE+METHOD,envelope);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (XmlPullParserException e) {
+                        e.printStackTrace();
+                    }
                 }
             }else
             {

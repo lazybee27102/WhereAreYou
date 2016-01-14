@@ -51,7 +51,7 @@ public class RecycleView_Friend_Adapter extends RecyclerView.Adapter<RecycleView
         TextView textView;
         public FriendViewHolder(View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.textView_friendrequest_name);
+            textView = (TextView) itemView.findViewById(R.id.textView_friendchanel_name);
         }
     }
 }

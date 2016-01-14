@@ -56,7 +56,11 @@ public class ProfileActivity extends AppCompatActivity {
         helper= new MySqlOpenHelper(this);
         setWidget();
         setEvent();
-        new GetUserByNameAsyncTask(this,"Getting your information", new GetUserByNameAsyncTask.GetUserByNameAsyncTaskResponse() {
+
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Getting your information");
+        progressDialog.show();
+        new GetUserByNameAsyncTask(this, new GetUserByNameAsyncTask.GetUserByNameAsyncTaskResponse() {
             @Override
             public void processResponse(User user) {
                 currentUser = user;
@@ -72,6 +76,8 @@ public class ProfileActivity extends AppCompatActivity {
                     editText_lName.setText(currentUser.getLastName());
                 if(currentUser.getLastLocation()!=null)
                     textView_lasLocation.setText(currentUser.getLastLocation());
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
 
             }
         }).execute(SharedPreference.ReadFromSharedPreference(this, "USER", ""));

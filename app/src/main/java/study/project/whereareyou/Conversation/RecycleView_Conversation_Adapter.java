@@ -37,11 +37,21 @@ public class RecycleView_Conversation_Adapter extends RecyclerView.Adapter<Recyc
     @Override
     public void onBindViewHolder(ConversationViewHolder holder, int position) {
         ConversationInfo ci = listConversation.get(position);
-        holder.textView_name_key_user.setText(ci.getKeyUser().getUserName());
+        holder.textView_name_key_user.setText(ci.getName());
         holder.textView_name_key_user.setTypeface(Typer.set(context).getFont(Font.ROBOTO_BOLD));
-        holder.textView_detail.setText(ci.getAllMessages().get(ci.getAllMessages().size()-1));
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0;i<ci.getAllGuessuser().size();i++)
+        {
+            if(i == ci.getAllGuessuser().size()-1)
+                stringBuilder.append(ci.getAllGuessuser().get(i) + "");
+            else
+                stringBuilder.append(ci.getAllGuessuser().get(i)+" - ");
+        }
+
+
+        holder.textView_detail.setText(stringBuilder);
         holder.textView_detail.setTypeface(Typer.set(context).getFont(Font.ROBOTO_BLACK));
-        holder.textView_date_created.setText(ci.getDateCreated());
         holder.textView_number_user.setText(ci.getAllGuessuser().size()+"");
 
 
@@ -57,21 +67,16 @@ public class RecycleView_Conversation_Adapter extends RecyclerView.Adapter<Recyc
     public class ConversationViewHolder extends RecyclerView.ViewHolder{
         protected TextView textView_name_key_user;
         protected TextView textView_detail;
-        protected TextView textView_date_created;
         protected TextView textView_number_user;
-        protected ImageView imageView_key_user;
 
 
 
 
         public ConversationViewHolder(View itemView) {
             super(itemView);
-            textView_name_key_user = (TextView)itemView.findViewById(R.id.textView_friendrequest_name);
-            textView_date_created = (TextView)itemView.findViewById(R.id.textView_date_created);
+            textView_name_key_user = (TextView)itemView.findViewById(R.id.textView_friendchanel_name);
             textView_detail = (TextView)itemView.findViewById(R.id.textView_detail);
             textView_number_user = (TextView) itemView.findViewById(R.id.textView_number_user);
-            imageView_key_user = (ImageView)itemView.findViewById(R.id.imageView_user_created);
-
         }
     }
 }

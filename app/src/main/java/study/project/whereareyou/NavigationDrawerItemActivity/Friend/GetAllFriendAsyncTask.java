@@ -45,6 +45,11 @@ public class GetAllFriendAsyncTask extends AsyncTask<String,Void,ArrayList<Strin
 
     @Override
     protected ArrayList<String> doInBackground(String... params) {
+        if(params[0]==null || params[0].toString().trim().length()==0)
+        {
+            return null;
+        }
+
         SoapObject request = new SoapObject(NAMESPACE,METHOD);
         request.addProperty("name",params[0]);
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
@@ -62,7 +67,6 @@ public class GetAllFriendAsyncTask extends AsyncTask<String,Void,ArrayList<Strin
                     SoapObject item = (SoapObject) arrSoap.getProperty(i);
                     String name =  item.getPropertyAsString("FriendId");
                     arr.add(name);
-
                 }
             }
         } catch (IOException e) {

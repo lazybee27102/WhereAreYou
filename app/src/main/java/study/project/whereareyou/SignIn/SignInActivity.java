@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +26,7 @@ import java.io.IOException;
 import study.project.whereareyou.MainActivity;
 import study.project.whereareyou.OtherUsefullClass.Message;
 import study.project.whereareyou.OtherUsefullClass.MyEncoder;
+import study.project.whereareyou.OtherUsefullClass.NoNetworkAvailableAcitivy;
 import study.project.whereareyou.OtherUsefullClass.SharedPreference;
 import study.project.whereareyou.R;
 import study.project.whereareyou.SqlHelper.MySqlOpenHelper;
@@ -38,6 +41,7 @@ public class SignInActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        runUIforUserConnectedNetWork();
         registerWidget();
         DetectCheckBox();
         setEvent();
@@ -60,6 +64,49 @@ public class SignInActivity extends Activity{
             editText_userName.setText(SharedPreference.ReadFromSharedPreference(getApplicationContext(),"USER",""));
             editText_passWord.setText(SharedPreference.ReadFromSharedPreference(getApplicationContext(),"PASSWORD",""));
         }
+    }
+
+    public void runUIforUserConnectedNetWork()
+    {
+        if(!haveNetworkConnection())
+        {
+            startActivityForResult(new Intent(this, NoNetworkAvailableAcitivy.class), MainActivity.ACTIVITY_SIGNIN_NETWORK);
+        }
+    }
+
+    public boolean haveNetworkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == MainActivity.ACTIVITY_SIGNIN_NETWORK)
+        {
+            if(resultCode == RESULT_CANCELED)
+            {
+                finish();
+                System.exit(0);
+            }else
+            {
+                runUIforUserConnectedNetWork();
+            }
+
+        }
+
     }
 
     private void setEvent() {
