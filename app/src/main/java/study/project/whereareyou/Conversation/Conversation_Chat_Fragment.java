@@ -269,7 +269,6 @@ public class Conversation_Chat_Fragment extends android.support.v4.app.Fragment 
             if (gcmRegId.isEmpty()) {
                 registerInBackground();
             } else {
-                Toast.makeText(getContext(), "Welcome Back", Toast.LENGTH_SHORT).show();
             }
         } else {
             Log.e("GCM-register", "No valid Google Play Services APK found.");

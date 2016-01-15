@@ -51,7 +51,7 @@ public class RecycleView_Conversation_Adapter extends RecyclerView.Adapter<Recyc
 
 
         holder.textView_detail.setText(stringBuilder);
-        holder.textView_detail.setTypeface(Typer.set(context).getFont(Font.ROBOTO_BLACK));
+        holder.textView_detail.setTypeface(Typer.set(context).getFont(Font.ROBOTO_LIGHT));
         holder.textView_number_user.setText(ci.getAllGuessuser().size()+"");
 
 
